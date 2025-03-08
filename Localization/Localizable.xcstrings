@@ -83,8 +83,8 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Vous **utilisez déjà** le réglage par défaut pour une souris avec **3 boutons**"
+            "state" : "translated",
+            "value" : "Vous **utilisez déjà** la configuration par défaut pour une souris avec **3 boutons**"
           }
         },
         "ko" : {
@@ -144,6 +144,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "You're **already using** the default setting for mice with **5+ buttons**"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous **utilisez déjà** la configuration par défaut pour une souris avec **5 boutons ou plus**."
           }
         },
         "ko" : {
@@ -1794,7 +1800,7 @@
     },
     "button-name.tool.numbered" : {
       "comment" : "",
-      "extractionState" : "stale",
+      "extractionState" : "manual",
       "localizations" : {
         "de" : {
           "stringUnit" : {
@@ -2073,7 +2079,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Bouton du milieu"
           }
         },
@@ -2138,7 +2144,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Bouton %@"
           }
         },
@@ -2203,7 +2209,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Bouton principal"
           }
         },
@@ -2268,7 +2274,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Bouton secondaire"
           }
         },
@@ -2375,7 +2381,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "%#@pluralizable@"
           },
           "substitutions" : {
@@ -2385,13 +2391,13 @@
                 "plural" : {
                   "one" : {
                     "stringUnit" : {
-                      "state" : "needs_review",
+                      "state" : "translated",
                       "value" : "%@ a été capturé par Mac Mouse Fix."
                     }
                   },
                   "other" : {
                     "stringUnit" : {
-                      "state" : "needs_review",
+                      "state" : "translated",
                       "value" : "%@ ont été capturés par Mac Mouse Fix."
                     }
                   }
@@ -2620,7 +2626,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "%#@pluralizable@"
           },
           "substitutions" : {
@@ -2823,7 +2829,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "[En savoir plus](%@)"
           }
         },
@@ -2930,7 +2936,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "%#@pluralizable@"
           },
           "substitutions" : {
@@ -3114,7 +3120,8 @@
             }
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "capture-toast.buttons.uncaptured.hint" : {
       "comment" : ".",
@@ -3175,7 +3182,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "%#@pluralizable@"
           },
           "substitutions" : {
@@ -3376,6 +3383,12 @@
             "value" : "**Scrolling** is now captured by Mac Mouse Fix."
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Le défilement** est maintenant capturé par Mac Mouse Fix."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -3473,7 +3486,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "[En savoir plus](%@)"
           }
         },
@@ -3536,6 +3549,12 @@
             "value" : "**Scrolling** is no longer captured by Mac Mouse Fix."
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**Le défilement** n’est maintenant plus capturé par Mac Mouse Fix."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -3581,6 +3600,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Scrolling now works as if Mac Mouse Fix was disabled."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le défilement maintenant marche comme si Mac Mouse Fix était désactivé."
           }
         },
         "ko" : {
@@ -3633,7 +3658,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Espaces & Mission Control"
+            "value" : "Bureaux & Mission Control"
           }
         },
         "ko" : {
@@ -3698,7 +3723,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Déplacer votre souris :\n - Vers le haut pour afficher Mission Control\n - Vers le bas pour afficher Fenêtres de l'application\n - Vers la gauche ou la droite pour passer d'un espace à un autre\n \nFonctionne comme le balayage à 3 doigts sur un Trackpad Apple"
+            "value" : "Déplacer votre souris :\n - Vers le haut pour afficher Mission Control\n - Vers le bas pour afficher les Fenêtres de l'application\n - Vers la gauche ou la droite pour passer d'un Bureau à un autre\n \nFonctionne comme le balayage à 3 doigts sur un Trackpad Apple"
           }
         },
         "ko" : {
@@ -4412,7 +4437,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Ouvrir les liens dans un nouvel onglet, coller du texte dans le Terminal et bien plus.\n \nFonctionne comme le clic sur le Bouton central de la souris (aussi appelé bouton de la molette de défilement ou Bouton de souris 3) sur une souris standard."
           }
         },
@@ -4542,7 +4567,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Fonctionne comme le clic sur le Bouton principal de la souris (aussi appelé bouton de souris gauche ou Bouton de souris 1) sur une souris standard."
           }
         },
@@ -4672,7 +4697,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Fonctionne comme le clic sur le Bouton secondaire de la souris (aussi appelé bouton de souris droit ou Bouton de souris 2) sur une souris standard."
           }
         },
@@ -5972,7 +5997,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Si vous rencontrez des **problèmes pour activer** l'app, cliquez&nbsp;[ici](%@)."
           }
         },
@@ -6226,8 +6251,8 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Mac Mouse Fix a été **désactivé** dans les Réglages Système\n\nPour activer Mac Mouse Fix :\n\n1. Se rendre dans les [paramètres Ouverture](%@)\n2. Activer « Mac Mouse Fix.app »"
+            "state" : "translated",
+            "value" : "Mac Mouse Fix a été **désactivé** dans les Réglages Système\n\nPour activer Mac Mouse Fix :\n\n1. Se rendre dans les [paramètres d’Ouverture de Session](%@)\n2. Activer « Mac Mouse Fix.app »"
           }
         },
         "ko" : {
@@ -6291,7 +6316,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Mac Mouse Fix ne peut pas être activé car une **autre version** de Mac Mouse Fix est présente sur votre ordinateur\n\nPour activer Mac Mouse Fix :\n\n1. Supprimer l'[autre version](%@)\n2. Vider la corbeille\n3. Redémarrer votre Mac\n4. Réessayer !"
           }
         },
@@ -6486,7 +6511,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "%1$@ et %2$@"
           }
         },
@@ -6746,7 +6771,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Cette licence a été activée **%2$d** fois. Le maximum est de **%3$d**.\n\nÀ cause de cela, la licence a été invalidée. Ceci permet d'éviter le piratage. Si vous avez d'autres raisons d'activer la licence autant de fois, veuillez m'excuser.\n\nIl suffit de [me contacter](%1$@) et je vous fournirai une nouvelle licence ! Merci de votre compréhension."
           }
         },
@@ -6941,7 +6966,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Cette licence **n’a pas pu être activée** mais Mac Mouse Fix est actuellement **gratuit dans votre pays** !"
           }
         },
@@ -7201,7 +7226,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "**« %@ »** n'est pas une clé de licence connue\n\nVeuillez essayer une clé différente"
           }
         },
@@ -7266,7 +7291,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "L'activation de votre licence a échoué pour des *raisons inconnues**\n\nVeuillez **signaler le bug** [ici](%@)"
           }
         },
@@ -7331,7 +7356,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Définir la vitesse sous\n[%1$@ > Souris > Vitesse de déplacement](%2$@)"
           }
         },
@@ -7982,7 +8007,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Défiler précisement, même sans un raccourci clavier,\nen bougeant la molette de défilement *doucement*"
           }
         },
@@ -8177,7 +8202,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Votre souris **%1$@** dit qu'elle a **%2$d** boutons"
           }
         },
@@ -8437,8 +8462,8 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : " **Cliquer ici** pour charger les paramètres recommandés\npour votre souris **%@**"
+            "state" : "translated",
+            "value" : " **Cliquer ici** pour charger les paramètres recommandés\npour votre souris (**%@**)"
           }
         },
         "ko" : {
@@ -8502,7 +8527,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Mac Mouse Fix **activé** pour %1$@\nIl a été désactivé depuis la barre des menus %2$@"
           }
         },
@@ -8567,7 +8592,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "**Boutons**"
           }
         },
@@ -8632,7 +8657,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "**Défilement**"
           }
         },
@@ -11492,7 +11517,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Jour gratuit **%1$d/%2$d**"
           }
         },
@@ -11622,7 +11647,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Activer une licence"
           }
         },
@@ -11687,7 +11712,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Bonjour ! Vous avez utilisé Mac Mouse Fix pendant maintenant **%1$d jours**. J'espère que vous l'appréciez !\n\nSi vous voulez continuer d'utiliser Mac Mouse Fix, vous pouvez [l'acheter maintenant](%2$@)."
           }
         },
@@ -11752,7 +11777,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "clic %@ +"
           }
         },
@@ -11817,7 +11842,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "double-clic %@ +"
           }
         },
@@ -11882,7 +11907,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "triple-clic %@ +"
           }
         },
@@ -11947,7 +11972,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Bouton du milieu"
           }
         },
@@ -12012,7 +12037,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Bouton %@"
           }
         },
@@ -12077,7 +12102,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Bouton principal"
           }
         },
@@ -12142,7 +12167,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Bouton secondaire"
           }
         },
@@ -12207,7 +12232,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "clic %@"
           }
         },
@@ -12272,7 +12297,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "double-clic %@"
           }
         },
@@ -12337,7 +12362,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "triple-clic %@"
           }
         },
@@ -12402,7 +12427,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "clic et glissement %@"
           }
         },
@@ -12467,7 +12492,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "double-clic et glissement %@"
           }
         },
@@ -12532,7 +12557,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "triple-clic et glissement %@"
           }
         },
@@ -12597,7 +12622,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "et glissement"
           }
         },
@@ -12662,8 +12687,8 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "maintien %@"
+            "state" : "translated",
+            "value" : "Maintenir %@"
           }
         },
         "ko" : {
@@ -12727,8 +12752,8 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "double-clic et maintien %@"
+            "state" : "translated",
+            "value" : "double-clic et maintenir %@"
           }
         },
         "ko" : {
@@ -12792,7 +12817,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "triple-clic et maintien %@"
           }
         },
@@ -12857,7 +12882,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "clic et défilement %@"
           }
         },
@@ -12922,7 +12947,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "double-clic et défilement %@"
           }
         },
@@ -12987,7 +13012,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "triple-clic et défilement %@"
           }
         },
@@ -13052,7 +13077,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "et défilement"
           }
         },
@@ -13117,7 +13142,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Bouton du milieu"
           }
         },
@@ -13182,7 +13207,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Bouton %@"
           }
         },
@@ -13247,7 +13272,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Bouton principal"
           }
         },
@@ -13312,7 +13337,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Bouton secondaire"
           }
         },
@@ -13377,7 +13402,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "glissement"
           }
         },
@@ -13436,7 +13461,7 @@
         },
         "fr" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "défilement"
           }
         },

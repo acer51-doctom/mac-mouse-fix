@@ -16,13 +16,12 @@
 
 /// Convenience wrapper
 HIDEvent *CGEventGetHIDEvent(CGEventRef cgEvent) {
-
-    if (!cgEvent) {
+    
+    if (cgEvent == NULL) {
         assert(false);
-        return nil;
     }
     
-    return (HIDEvent *)CFBridgingRelease(CGEventCopyIOHIDEvent(cgEvent));
+    return (__bridge_transfer HIDEvent *)CGEventCopyIOHIDEvent(cgEvent);
 }
 
 /// External CGEvent -> HIDEvent function
@@ -32,33 +31,28 @@ extern IOHIDEventRef CGEventCopyIOHIDEvent(CGEventRef); /// Doesnt seem to work 
 
 /// Convenience wrapper
 void CGEventSetHIDEvent(CGEventRef cgEvent, HIDEvent *hidEvent) {
+    
     return CGEventSetIOHIDEvent(cgEvent, (__bridge IOHIDEventRef)hidEvent);
 }
 
 /// Defining our own IOHIDEvent -> CGEvent function, because we can't find an external one. (See header)
 void CGEventSetIOHIDEvent(CGEventRef cgEvent, IOHIDEventRef iohidEvent) {
     
-    /// Validate
-    if (!cgEvent) {
+    if (cgEvent == NULL) {
         assert(false);
-        return;
     }
-    if (!iohidEvent) {
+    if (iohidEvent == NULL) {
         assert(false);
-        return;
     }
     
-    /// Retain
-    ///     CFRelease(cgEvent) also releases the embedded IOHIDEventRef
     CFRetain(iohidEvent);
+    /// ^ When we just stored HIDEvent * instead of IOHIDEventRef we needed to retain here. That's because CFRelease(cgEvent) also releases the embedded embedded IOHIDEventRef to be released. Now that we're storing IOHIDEventRef I'm not sure if this still works.
     
-    /// Get ptr
     void *resultHIDPtr = (void *)cgEvent;
+    
     applyOffset(&resultHIDPtr, 0x18); /// Shift
     resultHIDPtr = *(void **)resultHIDPtr; /// Dereference
     applyOffset(&resultHIDPtr, 0xd0); /// Shift
-    
-    /// Store IOHIDEvent
     *(IOHIDEventRef *)resultHIDPtr = iohidEvent; /// Store pointer to iohidEvent
 }
 

@@ -10,6 +10,8 @@
 #ifndef Mac_Mouse_Fix_Bridging_Header_h
 #define Mac_Mouse_Fix_Bridging_Header_h
 
+#import "Logging.h"
+
 #import "NSAnimationManager.h"
 #import "VectorUtility.h"
 #import "Constants.h"
@@ -24,7 +26,7 @@
 #import "IOHIDEventTypes.h"
 #import "HelperServices.h"
 #import "NSAttributedString+Additions.h"
-#import "ToastNotificationController.h"
+#import "ToastController.h"
 #import "Config.h"
 #import "NSDictionary+Additions.h"
 #import "SparkleUpdaterController.h"
@@ -40,13 +42,16 @@
 #import "Locator.h"
 #import "Device.h"
 #import "RemapTableUtility.h"
-#import "AlertCreator.h"
+#import "Alerts.h"
 #import "Shorthands.h"
-#import "Symbols.h"
+#import "SFSymbolStrings.h"
 #import "NSView+Additions.h"
 #import "NSScreen+Additions.h"
-#import "MacAddress.h"
-#import "MFCoding.h"
-#import "NSData+Additions.h"
+#import "CaptureToasts.h"
+#import "NSString+Steganography.h"
+#import "NSString+Additions.h"
+#import "IBUtility.h"
+#import "Links.h"
+
 
 #endif /* Mac_Mouse_Fix_Bridging_Header_h */

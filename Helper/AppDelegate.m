@@ -22,7 +22,8 @@
 
 - (void)applicationWillTerminate:(NSNotification *)notification {
     /// This doesn't seem to get called when the Helper is terminated through launchd.
-    /// Instead we catch the `SIGTERM` UNIX signal.
+    /// Instead use `signal_handler` in `AccessibiltyCheck` to catch SIGTERM.
+    
 }
 
 @end

@@ -13,7 +13,6 @@
 #import <Carbon/Carbon.h>
 #import "MFMessagePort.h"
 #import "NSView+Additions.h"
-#import "WannabePrefixHeader.h"
 #import "Mac_Mouse_Fix-Swift.h"
 
 @interface KeyCaptureView ()
@@ -72,7 +71,7 @@
 
 - (void)drawEmptyAppearance { // Not really drawing in the NSFillRect sense, probably a bad name
     
-    self.coolString = NSLocalizedString(@"type-shortcut-prompt", @"First draft: Type a Keyboard Shortcut");
+    self.coolString = NSLocalizedString(@"type-shortcut-prompt", @"");
     self.textColor = NSColor.placeholderTextColor;
     
     [self selectAll:nil];
@@ -142,12 +141,8 @@
         
         _isCapturing = YES;
         
-        /// If the window goes to the background, resign key
-        [NSNotificationCenter.defaultCenter addObserverForName:NSWindowDidResignKeyNotification
-                                                        object:MainAppState.shared.window
-                                                         queue:nil
-                                                    usingBlock:^(NSNotification * _Nonnull note)
-        {
+        // If the window goes to the background, resign key
+        [NSNotificationCenter.defaultCenter addObserverForName:NSWindowDidResignKeyNotification object:MainAppState.shared.window queue:nil usingBlock:^(NSNotification * _Nonnull note) {
                     [MainAppState.shared.window makeFirstResponder:nil];
         }];
         
@@ -162,8 +157,6 @@
             
             if (event.type == NSEventTypeFlagsChanged) {
                 CGEventFlags flags = CGEventGetFlags(e);
-                
-//                DDLogDebug(@"KeyCapureView: modifiers: %@", binarystring(flags));
                 
                 NSString *modString = [UIStrings getKeyboardModifierString:flags];
                 if (modString.length > 0) {

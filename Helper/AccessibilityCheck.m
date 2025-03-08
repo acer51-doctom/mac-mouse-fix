@@ -22,13 +22,31 @@
 #import "HelperServices.h"
 #import "PointerFreeze.h"
 #import "Mac_Mouse_Fix_Helper-Swift.h"
+#import "LocalizedStringAnnotation.h"
 
 #import "SharedUtility.h"
 
-#import "UNIXSignals.h"
-
+#import <signal.h>
 
 @implementation AccessibilityCheck
+
+/// Handle Unix signals
+
+static void signal_handler(int signal_number, siginfo_t *signal_info, void *context) {
+    
+    if (signal_number == SIGTERM) {
+        
+        /// Deconfigure
+        [DeviceManager deconfigureDevices];
+        
+        /// Terminate app
+        ///     I think `NSApplicationMain(argc, argv)` (found in main.m) sets up its own SIGTERM handler which we're overriding here. So we need to manually terminate the app.
+        ///     If this leads to further problems around termination, consider simply sending a `willTerminate` message from the Main App before terminating the Helper.
+        [NSApp terminate:nil];
+    } else {
+        NSLog(@"SIGTERM handler caught weird signal: %d", signal_number); /// Can't use CocoaLumberjack here since it might not be set up, yet (I think)
+    }
+}
 
 /// Load
 
@@ -93,18 +111,28 @@
     ///
     /// Testing & Debug
     ///
+
+
+//    [GlobalDefaults applyDoubleClickThreshold];
+//    PointerConfig.customTableBasedAccelCurve;
+//    CFMachPortRef testTap = [ModificationUtility createEventTapWithLocation:kCGSessionEventTap mask:CGEventMaskBit(kCGEventMouseMoved) | CGEventMaskBit(kCGEventLeftMouseDragged) | CGEventMaskBit(kCGEventScrollWheel) | CGEventMaskBit(kCGEventLeftMouseDown) /* | CGEventMaskBit()*/ option:kCGEventTapOptionDefault placement:kCGTailAppendEventTap callback: testCallback];
+//    CGEventTapEnable(testTap, true);
     
     
-    //    [GlobalDefaults applyDoubleClickThreshold];
-    //    PointerConfig.customTableBasedAccelCurve;
-    //    CFMachPortRef testTap = [ModificationUtility createEventTapWithLocation:kCGSessionEventTap mask:CGEventMaskBit(kCGEventMouseMoved) | CGEventMaskBit(kCGEventLeftMouseDragged) | CGEventMaskBit(kCGEventScrollWheel) | CGEventMaskBit(kCGEventLeftMouseDown) /* | CGEventMaskBit()*/ option:kCGEventTapOptionDefault placement:kCGTailAppendEventTap callback: testCallback];
-    //    CGEventTapEnable(testTap, true);
+    /// Setup termination handler
     
-    
-    [UNIXSignals load_Manual];
+    struct sigaction action = {
+        .sa_flags = SA_SIGINFO,
+        .sa_mask = 0,
+        .sa_sigaction = signal_handler,
+    };
+    int rt = sigaction(SIGTERM, &action, NULL);
+    if (rt < 0) {
+        NSLog(@"Accessibility Check - Error setting up sigterm handler: %d", rt); /// Can't use CocoaLumberjack here, since it's not set up, yet
+    }
     
     /// Set up CocoaLumberjack
-    [SharedUtility setupBasicCocoaLumberjackLogging];
+    [Logging setUpDDLog];
     DDLogInfo(@"Accessibility Check - Mac Mosue Fix begins logging excessively");
     
     
@@ -127,7 +155,6 @@
     /// __Pre-check init__
     ///
     
-    [PrefixSwift initGlobalStuff];
     [MFMessagePort load_Manual];
     
     ///
@@ -176,12 +203,17 @@
         DDLogInfo(@"Accessibility Check - Helper started with accessibility permissions at: URL %@", Locator.currentExecutableURL);
         
         ///
-        /// **Post-check init**
+        /// __Post-check init__
         ///
+
+        /// Annotate localized strings
+        ///     The swizzle should happen before the system loads any of our localized nib files, or localizedStrings are loaded from the NSBundle in another way. Otherwise we miss some strings in the localizationScreenshots.
+        if ([NSProcessInfo.processInfo.arguments containsObject:@"-MF_ANNOTATE_LOCALIZED_STRINGS"]) {
+            [LocalizedStringAnnotation swizzleNSBundle];
+        }
         
         /// Using `load_Manual` instead of normal load, because creating an eventTap crashes the program, if we don't have accessibilty access (I think - I don't really remember)
         /// TODO: Look into using `+ initialize` instead of `+ load`. The way we have things set up there are like a bajillion entry points to the program (one for every `+ load` function) which is kinda sucky. Might be better to have just one entry point to the program and then start everything that needs to be started with `+ start` functions and let `+ initialize` do the rest
-        
         [ButtonInputReceiver load_Manual];
         [DeviceManager load_Manual];
         [Scroll load_Manual];
@@ -216,12 +248,13 @@
         ///
         /// Note:
         /// - It would make sense to do this before the accessibility check, but calling this before the Post-check init crashes because of some stupid stuff. The stupid stuff is I I think the [Trial load_Manual] calls some other stuff that writes the isLicensed state to config and then when the config is commited that tries to updates the scroll module but it isn't initialized, yet so it crashes. If we structured things better we could do this before Post-check init but it's not important enough.
-        /// - If the helper is started because the user flipped the switch (not because the computer just started or something), then `triggeredByUser` should probably be `YES`.
-        ///     - Update: (Oct 2024) right now, we're using `triggeredByUser:NO` here, which makes it so the async tasks (loading the licenseConfig from the internet and talking to the Gumroad API) are performed with `priority: .background`.
-        ///         This leads to some delay between when the Helper is started and when it is locked down. If that delay is too long it could make for a weird experience. But right now it only seems to take a fraction of a second.
+        /// - If the helper is started because the user flipped the switch (not because the computer just started or something), then `triggeredByUser` should probably be `YES`. But it's currently unused anyways.
         
         [TrialCounter load_Manual];
-        [License checkAndReactWithTriggeredByUser:NO];
+        
+        [LicenseConfig getOnComplete:^(LicenseConfig * _Nonnull licenseConfig) {
+            [License checkAndReactWithLicenseConfig:licenseConfig triggeredByUser:NO];
+        }];
         
         ///
         /// Debug & testing

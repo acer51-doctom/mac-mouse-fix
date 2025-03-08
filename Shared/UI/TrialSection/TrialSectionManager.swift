@@ -8,7 +8,6 @@
 //
 
 import Foundation
-import CocoaLumberjackSwift
 
 class TrialSectionManager {
     
@@ -35,7 +34,7 @@ class TrialSectionManager {
     
     /// Start and stop
     
-    func startManaging(licenseConfig: MFLicenseConfig, trialState: MFTrialState) {
+    func startManaging(licenseConfig: LicenseConfig, license: MFLicenseAndTrialState) {
         
         /// Make initialSection current
         showInitial(animate: false)
@@ -43,15 +42,16 @@ class TrialSectionManager {
         /// Style intialSection
         
         /// Setup image
-        let imageName = trialState.trialIsActive ? "calendar" : "calendar" /*"hourglass.tophalf.filled"*/
+
+        let imageName = license.trialIsActive.boolValue ? "calendar" : "calendar"/*"hourglass.tophalf.filled"*/
         
         if #available(macOS 11.0, *) {
             currentSection.imageView!.symbolConfiguration = .init(pointSize: 13, weight: .regular, scale: .large)
         }
-        currentSection.imageView!.image = Symbols.image(withSymbolName: imageName)
+        currentSection.imageView!.image = SFSymbolStrings.image(withSymbolName: imageName)
         
         /// Set string
-        currentSection.textField!.attributedStringValue = LicenseUtility.trialCounterString(licenseConfig: licenseConfig, trialState: trialState)
+        currentSection.textField!.attributedStringValue = LicenseUtility.trialCounterString(licenseConfig: licenseConfig, license: license)
         
         /// Set height
         ///     This wasn't necessary under Ventura but under Monterey the textField is too high otherwise
@@ -145,7 +145,7 @@ class TrialSectionManager {
                 /// Setup Image
                 
                 /// Create image
-                let image = Symbols.image(withSymbolName: "lock.open")
+                let image = SFSymbolStrings.image(withSymbolName: "lock.open")
                 
                 /// Configure image
                 if #available(macOS 10.14, *) { newSection.imageView?.contentTintColor = .linkColor }
@@ -155,11 +155,9 @@ class TrialSectionManager {
                 newSection.imageView?.image = image
                 
                 /// Setup hyperlink
-                ///     I've heard of the activate link not working for some people. I think I even experienced it, once. Perhaps, the app's ability to handle `macmousefix:` links breaks sometimes. Feels like it might be a bug/security feature in macOS?
                 
-                let linkTitle = NSLocalizedString("trial-notif.activate-license-button", comment: "First draft: Activate License")
-                let linkAddress = "macmousefix:activate"
-                let link = Hyperlink(title: linkTitle, url: linkAddress, alwaysTracking: true, leftPadding: 30)
+                let linkTitle = NSLocalizedString("trial-notif.activate-license-button", comment: "")
+                let link = Hyperlink(title: linkTitle, linkID: kMFLinkIDMMFLActivate, alwaysTracking: true, leftPadding: 30)
                 link?.font = NSFont.systemFont(ofSize: 13, weight: .regular)
                 
                 link?.translatesAutoresizingMaskIntoConstraints = false

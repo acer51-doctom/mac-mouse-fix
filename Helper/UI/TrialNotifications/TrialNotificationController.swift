@@ -10,7 +10,6 @@
 /// Also see ToastNotifications in the mainApp. They work similarly.
 
 import Cocoa
-import CocoaLumberjackSwift
 
 class TrialNotificationController: NSWindowController {
 
@@ -88,7 +87,7 @@ class TrialNotificationController: NSWindowController {
     
     var firstAppearance = true
     
-    @objc func open(licenseConfig: MFLicenseConfig, licenseState: MFLicenseState, trialState: MFTrialState, triggeredByUser: Bool) {
+    @objc func open(licenseConfig: LicenseConfig, license: MFLicenseAndTrialState, triggeredByUser: Bool) {
         
         /// Validate
         
@@ -130,18 +129,20 @@ class TrialNotificationController: NSWindowController {
             /// Init the payButton
             /// May be more elegant to do this from IB directly but whatever
             ///     Use the quickPayLink for ASAP checkout if the users' flow has been interrupted
-            payButton.realInit(title: MFLicenseConfigFormattedPrice(licenseConfig)) {
+            payButton.realInit(title: licenseConfig.formattedPrice) {
+                let useQuickLink = !triggeredByUser
+                
                 LicenseUtility.buyMMF(licenseConfig: licenseConfig, locale: Locale.current, useQuickLink: !triggeredByUser)
             }
             
             /// Init the trialSection
             trialSectionManager = TrialSectionManager(self.trialSection)
-            trialSectionManager.startManaging(licenseConfig: licenseConfig, trialState: trialState)
+            trialSectionManager.startManaging(licenseConfig: licenseConfig, license: license)
             
             /// Set the bodyString
             
-            let bodyBase = NSLocalizedString("trial-notif.body", comment: "First draft: Hi there! You've been using Mac Mouse Fix for **%d days** now. I hope you're enjoying it!\n\nIf you want to keep using Mac Mouse Fix, you can [buy it now](%@).")
-            let bodyFormatted = String(format: bodyBase, trialState.daysOfUseUI, licenseConfig.quickPayLink)
+            let bodyBase = NSLocalizedString("trial-notif.body", comment: "")
+            let bodyFormatted = String(format: bodyBase, license.daysOfUseUI, licenseConfig.quickPayLink)
             let bodyMarkdown = NSAttributedString(coolMarkdown: bodyFormatted)!
             body.textStorage?.setAttributedString(bodyMarkdown)
             

@@ -11,9 +11,9 @@
 #import "HelperUtility.h"
 #import "Constants.h"
 #import "ModificationUtility.h"
-#import "WannabePrefixHeader.h"
 #import "Locator.h"
 #import "SharedUtility.h"
+#import "Logging.h"
 
 @implementation HelperUtility
 
@@ -27,32 +27,38 @@
 }
 
 + (CVReturn)display:(CGDirectDisplayID *)dspID atPoint:(CGPoint)point {
-    
-    /// Null-check
-    if (!dspID) { assert(false); return kCVReturnError; }
+    /// Pass in a CGEvent to get pointer location from. Not sure if signification optimization
     
     /// Get display
-    const uint32_t maxDisplays = 1;
-    uint32_t matchingDisplayCount; CGDirectDisplayID newDisplaysUnderMousePointer[maxDisplays];
-    CGError err = CGGetDisplaysWithPoint(point, maxDisplays, newDisplaysUnderMousePointer, &matchingDisplayCount);
-    if (err != kCGErrorSuccess) DDLogWarn(@"Getting display with point (%@) failed with error: %d",  NSStringFromPoint(point), err);
+    CGDirectDisplayID *newDisplaysUnderMousePointer = malloc(sizeof(CGDirectDisplayID));
+    uint32_t matchingDisplayCount;
+    uint32_t maxDisplays = 1;
+    CGGetDisplaysWithPoint(point, maxDisplays, newDisplaysUnderMousePointer, &matchingDisplayCount);
     
     if (matchingDisplayCount == 1) {
-        /// Success
-        CGDirectDisplayID d = CGDisplayPrimaryDisplay(newDisplaysUnderMousePointer[0]); /// Get the the master display in case `newDisplaysUnderMousePointer[0]` is part of a mirror set
+        
+        /// Get the the master display in case `_displaysUnderMousePointer[0]` is part of a mirror set
+        CGDirectDisplayID d = CGDisplayPrimaryDisplay(newDisplaysUnderMousePointer[0]);
+        
+        /// Free
+        free(newDisplaysUnderMousePointer);
+        
+        /// Success output
         *dspID = d;
         return kCVReturnSuccess;
-    }
-    else if (matchingDisplayCount == 0) {
-        /// Failure
+        
+    } else if (matchingDisplayCount == 0) {
+        
+        /// Free
+        free(newDisplaysUnderMousePointer);
+        
+        /// Failure output
         DDLogWarn(@"There are 0 diplays under the mouse pointer");
         *dspID = kCGNullDirectDisplay;
-        return kCVReturnError; /// Returning 'error' here is stupid. Just seting the result dspID to nil is enough.
-    }
-    else {
-        /// Impossible failure
-        assert(false && "This should never ever happen");
-        *dspID = kCGNullDirectDisplay;
+        return kCVReturnError;
+        
+    } else {
+        assert(false);
         return kCVReturnError;
     }
 }
@@ -123,7 +129,7 @@ NSString *runningApplicationDescription(NSRunningApplication *app) {
     NSArray<NSRunningApplication *> *apps = [NSRunningApplication runningApplicationsWithBundleIdentifier:kMFBundleIDApp];
     
     for (NSRunningApplication *app in apps) {
-        [app activateWithOptions:NSApplicationActivateIgnoringOtherApps]; /// Note: `NSApplicationActivateIgnoringOtherApps` is deprecated under macOS 15 Sequoia, so it's good we're not using this anymore (as of Sep 2024)
+        [app activateWithOptions:NSApplicationActivateIgnoringOtherApps];
     }
 }
 
@@ -208,10 +214,9 @@ NSPoint getFlippedPointerLocationWithEvent(CGEventRef locEvent) {
  I just did some performance testing on 3 functions to get pointer locations functions found in this file:
  For a thousand runs I got these times:
  
- - getPointerLocation:               `0.000117s`
- - pointerLocationWithEvent:    `0.000015s`
- - pointerLocationNS:               `0.001375s`
- -> TODO: Test again now that we know to use CGEventSourceFlagsState() instead of CGEventCreate(NULL) to get current flags
+ - getPointerLocation: 0.000117s
+ - pointerLocationWithEvent: 0.000015s
+ - pointerLocationNS: 0.001375s
  
  -> All of them are plenty fast. It shouldn't matter at all which I use from a performance standpoint.
     I think I got it in my head to use these `withEvent` functions because I had some troubles where I used an `eventLess` way to get modifier flags while implementing the remapping engine and that `eventLess` function caused some mean bug because it didn't provide completely up-to-date values. So it's valuable to have both `withEvent` and `eventLess` around. But I shouldn't think about performance when deciding what to use here

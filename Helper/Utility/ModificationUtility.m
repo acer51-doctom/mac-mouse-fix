@@ -17,6 +17,7 @@
 #import "CGSCursor.h"
 #include <sys/types.h>
 #include <sys/sysctl.h>
+#import "Logging.h"
 
 @implementation ModificationUtility
 
@@ -52,10 +53,6 @@ BOOL directionChanged(MFDirection direction1, MFDirection direction2) {
 
 + (NSTimeInterval)nsTimeStamp {
     /// Time since system startup in seconds. This value is used in NSEvent timestamps
-    ///     Notes:
-    ///         - Shouldn't this be the same as `CACurrentMediaTime()`?
-    ///         - When to use this over other clocks like `mach_absolute_time()`?
-    ///         - IIRC this is only used for certain NSEventTypes?
 
     int MIB_SIZE = 2;
     

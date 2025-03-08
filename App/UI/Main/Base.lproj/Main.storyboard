@@ -20,6 +20,7 @@
                                     <items>
                                         <menuItem title="About Mac Mouse Fix" id="u9F-yq-WC3">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <accessibility identifier="axMenuItemAboutMacMouseFix"/>
                                             <connections>
                                                 <action selector="openAboutTab:" target="Voe-Tx-rLC" id="HWV-dp-GPx"/>
                                             </connections>
@@ -27,12 +28,14 @@
                                         <menuItem isSeparatorItem="YES" id="EZF-ln-4YN"/>
                                         <menuItem title="Activate License..." id="YBT-Ar-F4S">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <accessibility identifier="axMenuItemActivateLicense"/>
                                             <connections>
                                                 <action selector="activateLicense:" target="Voe-Tx-rLC" id="zHH-gf-IUB"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Buy Mac Mouse Fix..." id="d0g-07-PaJ">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <accessibility identifier="axMenuItemBuyMacMouseFix"/>
                                             <connections>
                                                 <action selector="buyMMF:" target="Voe-Tx-rLC" id="LM6-60-RNE"/>
                                             </connections>
@@ -40,6 +43,7 @@
                                         <menuItem isSeparatorItem="YES" id="er1-Mw-t0o"/>
                                         <menuItem title="Check for Updates..." id="3pt-ka-lxV">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <accessibility identifier="axMenuItemCheckForUpdates"/>
                                             <connections>
                                                 <action selector="checkForUpdates:" target="0Vp-JG-nY6" id="M6c-Iz-PQZ"/>
                                             </connections>
@@ -48,33 +52,39 @@
                                         <menuItem title="Services" id="Gr8-qh-oGd">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <menu key="submenu" title="Services" systemMenu="services" id="X8q-Nk-Fwr"/>
+                                            <accessibility identifier="axMenuItemServices"/>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="3A5-gM-eM7"/>
                                         <menuItem title="Hide Mac Mouse Fix" keyEquivalent="h" id="Bnm-ze-Mca">
+                                            <accessibility identifier="axMenuItemHideMacMouseFix"/>
                                             <connections>
                                                 <action selector="hide:" target="Ady-hI-5gd" id="DvG-O9-en1"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Hide Others" keyEquivalent="h" id="Rlr-89-4fc">
                                             <modifierMask key="keyEquivalentModifierMask" option="YES" command="YES"/>
+                                            <accessibility identifier="axMenuItemHideOthers"/>
                                             <connections>
                                                 <action selector="hideOtherApplications:" target="Ady-hI-5gd" id="Y8Y-9m-Zpe"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Show All" id="fGs-UI-L0d">
                                             <modifierMask key="keyEquivalentModifierMask"/>
+                                            <accessibility identifier="axMenuItemShowAll"/>
                                             <connections>
                                                 <action selector="unhideAllApplications:" target="Ady-hI-5gd" id="pl9-uK-Xa1"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem isSeparatorItem="YES" id="Zd5-PO-XF4"/>
                                         <menuItem title="Quit Mac Mouse Fix" keyEquivalent="q" id="UeD-ND-tYj">
+                                            <accessibility identifier="axMenuItemQuitMacMouseFix"/>
                                             <connections>
                                                 <action selector="terminate:" target="Ady-hI-5gd" id="rFO-NZ-0iA"/>
                                             </connections>
                                         </menuItem>
                                     </items>
                                 </menu>
+                                <accessibility identifier="axMenuBarItemMacMouseFix"/>
                             </menuItem>
                             <menuItem title="Edit" id="6Yt-gG-Nf9">
                                 <modifierMask key="keyEquivalentModifierMask"/>
@@ -157,7 +167,7 @@
                                         <menuItem title="View Guides or Ask the Community..." id="2Uv-W7-hzJ" userLabel="View Guides or Ask the Community..." customClass="URLMenuItem">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                             <userDefinedRuntimeAttributes>
-                                                <userDefinedRuntimeAttribute type="string" keyPath="URLString" value="https://github.com/noah-nuebling/mac-mouse-fix/discussions"/>
+                                                <userDefinedRuntimeAttribute type="string" keyPath="MFLinkID" value="GuidesAndCommunity"/>
                                             </userDefinedRuntimeAttributes>
                                         </menuItem>
                                     </items>
@@ -285,10 +295,10 @@
                                                             <font key="font" metaFont="systemBold" size="14"/>
                                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                            <attributedString key="userComments">
+                                                                <fragment content="General &gt; Enable Mac Mouse Fix Label"/>
+                                                            </attributedString>
                                                         </textFieldCell>
-                                                        <attributedString key="userComments">
-                                                            <fragment content="General &gt; Enable Mac Mouse Fix Label"/>
-                                                        </attributedString>
                                                     </textField>
                                                 </subviews>
                                                 <constraints>
@@ -340,7 +350,13 @@
                                                             <font key="font" metaFont="smallSystem"/>
                                                             <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                            <attributedString key="userComments">
+                                                                <fragment content="General &gt; Enable Mac Mouse Fix Toggle &gt; Hint"/>
+                                                            </attributedString>
                                                         </textFieldCell>
+                                                        <attributedString key="userComments">
+                                                            <fragment content="NOAH: Put localizer Hints on NSCell (This one won't show up)"/>
+                                                        </attributedString>
                                                     </textField>
                                                 </subviews>
                                                 <constraints>
@@ -369,10 +385,11 @@
                                                 <buttonCell key="cell" type="check" title="Show in Menu Bar" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="ILO-GQ-vNk">
                                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                     <font key="font" metaFont="system"/>
+                                                    <attributedString key="userComments">
+                                                        <fragment content="General &gt; Show in Menu Bar Toggle"/>
+                                                    </attributedString>
                                                 </buttonCell>
-                                                <attributedString key="userComments">
-                                                    <fragment content="General &gt; Show in Menu Bar Toggle"/>
-                                                </attributedString>
+                                                <accessibility identifier="axShowInMenuBarToggle"/>
                                             </button>
                                             <customView horizontalHuggingPriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="hr6-ym-FE1" userLabel="MenuBarIndent">
                                                 <rect key="frame" x="0.0" y="107" width="245" height="28"/>
@@ -385,6 +402,11 @@
 smooth scrolling</string>
                                                             <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                            <attributedString key="userComments">
+                                                                <fragment>
+                                                                    <string key="content">General &gt; Show in Menu Bar Toggle &gt; Hint || NOTE: There's a linebreak here to prevent the General Tab from becoming too wide, which looks weird. You can set the linebreak to your own taste. || Hint: if text in your language is typically around X times longer than English, then the lines here probably should not be much longer than X times the English version.</string>
+                                                                </fragment>
+                                                            </attributedString>
                                                         </textFieldCell>
                                                     </textField>
                                                 </subviews>
@@ -414,10 +436,11 @@ smooth scrolling</string>
                                                 <buttonCell key="cell" type="check" title="Check for Updates" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="tdD-8Q-JB2">
                                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                     <font key="font" metaFont="system"/>
+                                                    <attributedString key="userComments">
+                                                        <fragment content="General &gt; Check for Updates Toggle"/>
+                                                    </attributedString>
                                                 </buttonCell>
-                                                <attributedString key="userComments">
-                                                    <fragment content="General &gt; Check for Updates Toggle"/>
-                                                </attributedString>
+                                                <accessibility identifier="axCheckForUpdatesToggle"/>
                                             </button>
                                             <customView horizontalHuggingPriority="999" verticalHuggingPriority="999" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="ojq-7M-UaO" userLabel="Updates extra section">
                                                 <rect key="frame" x="0.0" y="0.0" width="381" height="50"/>
@@ -430,10 +453,11 @@ smooth scrolling</string>
                                                                 <buttonCell key="cell" type="check" title="Get Beta Versions" bezelStyle="regularSquare" imagePosition="left" controlSize="small" state="on" inset="2" id="Mck-5W-5lv">
                                                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                                     <font key="font" metaFont="smallSystem"/>
+                                                                    <attributedString key="userComments">
+                                                                        <fragment content="General &gt; Get Beta Versions Toggle"/>
+                                                                    </attributedString>
                                                                 </buttonCell>
-                                                                <attributedString key="userComments">
-                                                                    <fragment content="General &gt; Get Beta Versions Toggle"/>
-                                                                </attributedString>
+                                                                <accessibility identifier="axGetBetaVersionsToggle"/>
                                                             </button>
                                                             <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="tvD-Xi-viR" customClass="MarkdownTextField" customModule="Mac_Mouse_Fix" customModuleProvider="target">
                                                                 <rect key="frame" x="-2" y="0.0" width="234" height="28"/>
@@ -443,6 +467,11 @@ smooth scrolling</string>
 this window</string>
                                                                     <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                    <attributedString key="userComments">
+                                                                        <fragment>
+                                                                            <string key="content">General &gt; Check for Updates Toggle &gt; Hint || NOTE: There's a linebreak here to prevent the General Tab from becoming too wide, which looks weird. You can set the linebreak to your own taste. || Hint: if text in your language is typically around X times longer than English, then the lines here probably should not be much longer than X times the English version.</string>
+                                                                        </fragment>
+                                                                    </attributedString>
                                                                 </textFieldCell>
                                                             </textField>
                                                         </subviews>
@@ -569,10 +598,10 @@ this window</string>
 You can also *Double Click*, *Click and Drag* and [more]().</string>
                                                     <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    <attributedString key="userComments">
+                                                        <fragment content="Buttons &gt; Add Field Hint"/>
+                                                    </attributedString>
                                                 </textFieldCell>
-                                                <attributedString key="userComments">
-                                                    <fragment content="Buttons &gt; Add Field Hint || It's better to use * instead of _ for emphasis. _ causes problems in some languages like Chinese."/>
-                                                </attributedString>
                                             </textField>
                                         </subviews>
                                         <constraints>
@@ -594,7 +623,7 @@ You can also *Double Click*, *Click and Drag* and [more]().</string>
                                                     <tableViewGridLines key="gridStyleMask" vertical="YES" horizontal="YES"/>
                                                     <color key="gridColor" name="separatorColor" catalog="System" colorSpace="catalog"/>
                                                     <tableColumns>
-                                                        <tableColumn identifier="trigger" width="287.5" minWidth="40" maxWidth="1000" id="o3B-zA-fJm">
+                                                        <tableColumn identifier="trigger" width="287" minWidth="40" maxWidth="1000" id="o3B-zA-fJm">
                                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="center" title="&lt;Trigger&gt;">
                                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
@@ -684,7 +713,7 @@ You can also *Double Click*, *Click and Drag* and [more]().</string>
                                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES"/>
                                                             <prototypeCellViews>
                                                                 <tableCellView identifier="effectCell" translatesAutoresizingMaskIntoConstraints="NO" id="Epw-SW-Ew3" customClass="RemapTableCellView" customModule="Mac_Mouse_Fix" customModuleProvider="target">
-                                                                    <rect key="frame" x="312.5" y="0.0" width="223" height="39"/>
+                                                                    <rect key="frame" x="312" y="0.0" width="223" height="39"/>
                                                                     <subviews>
                                                                         <popUpButton verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="Pw9-ZH-Tb7">
                                                                             <rect key="frame" x="0.0" y="6" width="224" height="25"/>
@@ -712,7 +741,7 @@ You can also *Double Click*, *Click and Drag* and [more]().</string>
                                                                     </constraints>
                                                                 </tableCellView>
                                                                 <tableCellView identifier="keyCaptureCell" translatesAutoresizingMaskIntoConstraints="NO" id="MzR-b1-853" customClass="RemapTableCellView" customModule="Mac_Mouse_Fix" customModuleProvider="target">
-                                                                    <rect key="frame" x="312.5" y="39" width="220" height="39"/>
+                                                                    <rect key="frame" x="312" y="39" width="220" height="39"/>
                                                                     <subviews>
                                                                         <button hidden="YES" focusRingType="exterior" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="psy-Jg-KLq">
                                                                             <rect key="frame" x="-4" y="3" width="228" height="32"/>
@@ -815,20 +844,25 @@ You can also *Double Click*, *Click and Drag* and [more]().</string>
                                                 <buttonCell key="cell" type="push" title="Options..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Hur-83-2a2">
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="system"/>
+                                                    <attributedString key="userComments">
+                                                        <fragment content="Buttons &gt; Options... Button"/>
+                                                    </attributedString>
                                                     <connections>
                                                         <action selector="openOptions:" target="d9S-X9-qM1" id="PCM-vg-X7d"/>
                                                     </connections>
                                                 </buttonCell>
-                                                <attributedString key="userComments">
-                                                    <fragment content="Buttons &gt; Options... Button"/>
-                                                </attributedString>
+                                                <accessibility identifier="axButtonsOptionsButton"/>
                                             </button>
                                             <button horizontalHuggingPriority="1000" verticalHuggingPriority="750" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="JHB-lg-H8e">
                                                 <rect key="frame" x="402" y="7" width="146" height="32"/>
                                                 <buttonCell key="cell" type="push" title="Restore Defaults..." bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="lrw-Lp-nQ4">
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="system"/>
+                                                    <attributedString key="userComments">
+                                                        <fragment content="Buttons &gt; Restore Defaults... Button"/>
+                                                    </attributedString>
                                                 </buttonCell>
+                                                <accessibility identifier="axButtonsRestoreDefaultsButton"/>
                                                 <connections>
                                                     <action selector="restoreDefaults:" target="d9S-X9-qM1" id="7oJ-cm-HM8"/>
                                                 </connections>
@@ -892,33 +926,38 @@ You can also *Double Click*, *Click and Drag* and [more]().</string>
                         <outlet property="view" destination="JEf-5U-AJf" id="jQD-XG-Ikk"/>
                     </connections>
                 </customObject>
-                <popover id="Cts-Zb-d93">
+                <popover id="Cts-Zb-d93" userLabel="Restore Defaults Popover">
                     <connections>
                         <outlet property="contentViewController" destination="f69-0B-qE6" id="8Kp-7C-UKC"/>
                     </connections>
                 </popover>
-                <viewController id="f69-0B-qE6" userLabel="Popover View Controller">
+                <viewController id="f69-0B-qE6" userLabel="Restore Defaults Popover Controller">
                     <connections>
                         <outlet property="view" destination="FHF-Ki-DbV" id="eZy-xK-tEo"/>
                     </connections>
                 </viewController>
-                <customView misplaced="YES" id="FHF-Ki-DbV" userLabel="Popover Content">
+                <customView misplaced="YES" id="FHF-Ki-DbV" userLabel="Restore Defaults Popover Content">
                     <rect key="frame" x="0.0" y="0.0" width="447" height="122"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <subviews>
                         <button horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="PRU-rA-I4Y">
-                            <rect key="frame" x="147" y="11" width="163" height="18"/>
+                            <rect key="frame" x="144" y="11" width="163" height="18"/>
                             <buttonCell key="cell" type="check" title="Don't remind me again" bezelStyle="regularSquare" imagePosition="left" inset="2" id="bgk-wr-o8T">
                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                 <font key="font" metaFont="system"/>
+                                <attributedString key="userComments">
+                                    <fragment>
+                                        <string key="content">Restore Defaults Popover &gt; Don't Remind Toggle &gt; Label || NOTE: This is the label for a checkbox letting the user tell the app not to be reminded again to load the recommended button settings for their mouse. || NOTE 2: This text is displayed below the text with the key `restore-default-buttons-popover.body`, which is defined in Localizable.xcstrings</string>
+                                    </fragment>
+                                </attributedString>
                             </buttonCell>
                         </button>
                         <textField focusRingType="none" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" misplaced="YES" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cxd-49-HcJ" customClass="MarkdownTextField" customModule="Mac_Mouse_Fix" customModuleProvider="target">
                             <rect key="frame" x="-13" y="74" width="472" height="38"/>
                             <textFieldCell key="cell" lineBreakMode="clipping" allowsUndo="NO" alignment="center" id="g5F-ZO-vGZ">
                                 <font key="font" usesAppearanceFont="YES"/>
-                                <string key="title">&lt;Click "__Restore Defaults...__" to load the recommended settings for 
-your __Logitech M720 Triathlon__.&gt;</string>
+                                <string key="title">&lt;Click "**Restore Defaults...**" to load the recommended settings for 
+your mouse. (**Logitech M720 Triathlon**)&gt;</string>
                                 <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
@@ -963,10 +1002,10 @@ your __Logitech M720 Triathlon__.&gt;</string>
                                                     <font key="font" usesAppearanceFont="YES"/>
                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    <attributedString key="userComments">
+                                                        <fragment content="Scrolling &gt; Smoothness Label"/>
+                                                    </attributedString>
                                                 </textFieldCell>
-                                                <attributedString key="userComments">
-                                                    <fragment content="Scrolling &gt; Smoothness Label"/>
-                                                </attributedString>
                                             </textField>
                                             <popUpButton horizontalHuggingPriority="1000" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="saP-aP-bnv">
                                                 <rect key="frame" x="84" y="-4" width="86" height="25"/>
@@ -993,6 +1032,7 @@ your __Logitech M720 Triathlon__.&gt;</string>
                                                         </items>
                                                     </menu>
                                                 </popUpButtonCell>
+                                                <accessibility identifier="axScrollingSmoothnessButton"/>
                                             </popUpButton>
                                         </subviews>
                                         <visibilityPriorities>
@@ -1018,10 +1058,10 @@ your __Logitech M720 Triathlon__.&gt;</string>
                                                 <buttonCell key="cell" type="check" title="Trackpad Simulation" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="N65-aN-Hxp">
                                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                     <font key="font" metaFont="system"/>
+                                                    <attributedString key="userComments">
+                                                        <fragment content="Scroll &gt; Trackpad Simulation Toggle"/>
+                                                    </attributedString>
                                                 </buttonCell>
-                                                <attributedString key="userComments">
-                                                    <fragment content="Scroll &gt; Trackpad Interactions"/>
-                                                </attributedString>
                                             </button>
                                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="K2b-ZE-JxN" userLabel="Indent">
                                                 <rect key="frame" x="0.0" y="0.0" width="350" height="28"/>
@@ -1032,10 +1072,12 @@ your __Logitech M720 Triathlon__.&gt;</string>
                                                             <font key="font" metaFont="smallSystem"/>
                                                             <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                            <attributedString key="userComments">
+                                                                <fragment>
+                                                                    <string key="content">Scrolling &gt; Trackpad Simulation Toggle &gt; Hint || NOTE: this text will automaticlly linebreak to adapt to the width of the Scrolling Tab. You don't need to set linebreaks to make it look correct. || NOTE 2: There are multiple screenshots for this text. If you're using Xcode, click the arrows in the QuickLook window to see them.</string>
+                                                                </fragment>
+                                                            </attributedString>
                                                         </textFieldCell>
-                                                        <attributedString key="userComments">
-                                                            <fragment content="Scrolling &gt; Trackpad Interactions &gt; Hint"/>
-                                                        </attributedString>
                                                     </textField>
                                                 </subviews>
                                                 <constraints>
@@ -1068,10 +1110,10 @@ your __Logitech M720 Triathlon__.&gt;</string>
                                         <buttonCell key="cell" type="check" title="Reverse Direction" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="gK0-1z-Pjv">
                                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                             <font key="font" metaFont="system"/>
+                                            <attributedString key="userComments">
+                                                <fragment content="Scrolling &gt; Reverse Scroll Direction Toggle"/>
+                                            </attributedString>
                                         </buttonCell>
-                                        <attributedString key="userComments">
-                                            <fragment content="Scrolling &gt; Reverse Scroll Direction Toggle"/>
-                                        </attributedString>
                                     </button>
                                     <customView verticalHuggingPriority="999" translatesAutoresizingMaskIntoConstraints="NO" id="PDb-87-6bc" userLabel="Divider">
                                         <rect key="frame" x="0.0" y="285" width="350" height="26"/>
@@ -1096,10 +1138,10 @@ your __Logitech M720 Triathlon__.&gt;</string>
                                                     <font key="font" usesAppearanceFont="YES"/>
                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    <attributedString key="userComments">
+                                                        <fragment content="Scrolling &gt; Scroll Speed Label"/>
+                                                    </attributedString>
                                                 </textFieldCell>
-                                                <attributedString key="userComments">
-                                                    <fragment content="Scrolling &gt; Scroll Speed Label"/>
-                                                </attributedString>
                                             </textField>
                                             <popUpButton horizontalHuggingPriority="1000" verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="AUN-SK-ju7">
                                                 <rect key="frame" x="48" y="-4" width="88" height="25"/>
@@ -1132,6 +1174,7 @@ your __Logitech M720 Triathlon__.&gt;</string>
                                                         </items>
                                                     </menu>
                                                 </popUpButtonCell>
+                                                <accessibility identifier="axScrollingSpeedButton"/>
                                             </popUpButton>
                                         </subviews>
                                         <visibilityPriorities>
@@ -1157,10 +1200,10 @@ your __Logitech M720 Triathlon__.&gt;</string>
                                                 <buttonCell key="cell" type="check" title="Precision" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="4hf-tQ-y76">
                                                     <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                                     <font key="font" metaFont="system"/>
+                                                    <attributedString key="userComments">
+                                                        <fragment content="Scrolling &gt; Precise Scrolling Toggle"/>
+                                                    </attributedString>
                                                 </buttonCell>
-                                                <attributedString key="userComments">
-                                                    <fragment content="Scrolling &gt; Precise Scrolling Toggle"/>
-                                                </attributedString>
                                             </button>
                                             <customView horizontalHuggingPriority="999" verticalHuggingPriority="999" translatesAutoresizingMaskIntoConstraints="NO" id="WnW-0I-ajJ" userLabel="Indent">
                                                 <rect key="frame" x="0.0" y="0.0" width="293" height="14"/>
@@ -1216,10 +1259,10 @@ your __Logitech M720 Triathlon__.&gt;</string>
                                                     <font key="font" metaFont="system"/>
                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    <attributedString key="userComments">
+                                                        <fragment content="Scrolling &gt; Keyboard Modifiers Label"/>
+                                                    </attributedString>
                                                 </textFieldCell>
-                                                <attributedString key="userComments">
-                                                    <fragment content="Scrolling &gt; Keyboard Modifiers Label"/>
-                                                </attributedString>
                                             </textField>
                                             <button translatesAutoresizingMaskIntoConstraints="NO" id="4ZD-1f-bbe" userLabel="Restore Defaults button">
                                                 <rect key="frame" x="335" y="154" width="15" height="15"/>
@@ -1227,6 +1270,7 @@ your __Logitech M720 Triathlon__.&gt;</string>
                                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                                     <font key="font" metaFont="system"/>
                                                 </buttonCell>
+                                                <accessibility identifier="axScrollingRestoreDefaultModifiersButton"/>
                                             </button>
                                             <gridView horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" xPlacement="none" yPlacement="none" rowAlignment="none" rowSpacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="93c-HE-afM">
                                                 <rect key="frame" x="59" y="0.0" width="232" height="70"/>
@@ -1249,10 +1293,10 @@ your __Logitech M720 Triathlon__.&gt;</string>
                                                                         <font key="font" metaFont="smallSystem"/>
                                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                        <attributedString key="userComments">
+                                                                            <fragment content="Scrolling &gt; Keyboard Modifiers &gt; Scroll Horizontally Label"/>
+                                                                        </attributedString>
                                                                     </textFieldCell>
-                                                                    <attributedString key="userComments">
-                                                                        <fragment content="Scrolling &gt; Keyboard Modifiers &gt; Scroll Horizontally Label"/>
-                                                                    </attributedString>
                                                                 </textField>
                                                                 <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="PpE-2r-BrM" customClass="ModCaptureTextField" customModule="Mac_Mouse_Fix" customModuleProvider="target">
                                                                     <rect key="frame" x="19" y="5" width="75" height="5"/>
@@ -1304,10 +1348,10 @@ your __Logitech M720 Triathlon__.&gt;</string>
                                                                         <font key="font" metaFont="smallSystem"/>
                                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                        <attributedString key="userComments">
+                                                                            <fragment content="Scrolling &gt; Keyboard Modifiers &gt; Zoom In or Out Label"/>
+                                                                        </attributedString>
                                                                     </textFieldCell>
-                                                                    <attributedString key="userComments">
-                                                                        <fragment content="Scrolling &gt; Keyboard Modifiers &gt; Zoom In or Out Label"/>
-                                                                    </attributedString>
                                                                 </textField>
                                                                 <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="HZF-jc-NcN" customClass="ModCaptureTextField" customModule="Mac_Mouse_Fix" customModuleProvider="target">
                                                                     <rect key="frame" x="19" y="5" width="75" height="5"/>
@@ -1359,10 +1403,10 @@ your __Logitech M720 Triathlon__.&gt;</string>
                                                                         <font key="font" metaFont="smallSystem"/>
                                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                        <attributedString key="userComments">
+                                                                            <fragment content="Scrolling &gt; Keyboard Modifiers &gt; Scroll Swiftly Label"/>
+                                                                        </attributedString>
                                                                     </textFieldCell>
-                                                                    <attributedString key="userComments">
-                                                                        <fragment content="Scrolling &gt; Keyboard Modifiers &gt; Scroll Swiftly Label"/>
-                                                                    </attributedString>
                                                                 </textField>
                                                                 <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Abk-fb-uRV" customClass="ModCaptureTextField" customModule="Mac_Mouse_Fix" customModuleProvider="target">
                                                                     <rect key="frame" x="19" y="5" width="75" height="5"/>
@@ -1414,10 +1458,10 @@ your __Logitech M720 Triathlon__.&gt;</string>
                                                                         <font key="font" metaFont="smallSystem"/>
                                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                                        <attributedString key="userComments">
+                                                                            <fragment content="Scrolling &gt; Keyboard Modifiers &gt; Scroll Precisely Label"/>
+                                                                        </attributedString>
                                                                     </textFieldCell>
-                                                                    <attributedString key="userComments">
-                                                                        <fragment content="Scrolling &gt; Keyboard Modifiers &gt; Scroll Precisely Label"/>
-                                                                    </attributedString>
                                                                 </textField>
                                                                 <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gqo-T2-Nmz" customClass="ModCaptureTextField" customModule="Mac_Mouse_Fix" customModuleProvider="target">
                                                                     <rect key="frame" x="19" y="5" width="75" height="5"/>
@@ -1552,10 +1596,10 @@ your __Logitech M720 Triathlon__.&gt;</string>
                                             <font key="font" metaFont="system"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <attributedString key="userComments">
+                                                <fragment content="Pointer &gt; Sensitivity Label"/>
+                                            </attributedString>
                                         </textFieldCell>
-                                        <attributedString key="userComments">
-                                            <fragment content="Pointer &gt; Sensitivity Label"/>
-                                        </attributedString>
                                     </textField>
                                     <slider verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2hn-s0-Fxz">
                                         <rect key="frame" x="166" y="105" width="187" height="28"/>
@@ -1570,10 +1614,10 @@ your __Logitech M720 Triathlon__.&gt;</string>
                                             <font key="font" metaFont="system"/>
                                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <attributedString key="userComments">
+                                                <fragment content="Pointer &gt; Acceleration Label"/>
+                                            </attributedString>
                                         </textFieldCell>
-                                        <attributedString key="userComments">
-                                            <fragment content="Pointer &gt; Acceleration Label"/>
-                                        </attributedString>
                                     </textField>
                                     <stackView autoresizesSubviews="NO" distribution="fill" orientation="vertical" alignment="leading" spacing="7" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" translatesAutoresizingMaskIntoConstraints="NO" id="iFK-rA-4bs" userLabel="Acc Stack" customClass="CollapsingStackView" customModule="Mac_Mouse_Fix" customModuleProvider="target">
                                         <rect key="frame" x="166" y="20" width="251" height="55"/>
@@ -1632,10 +1676,10 @@ your __Logitech M720 Triathlon__.&gt;</string>
 System Preferences &gt; Mouse &gt; Tracking speed </string>
                                                     <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="backgroundColor" red="0.11764705882352941" green="0.11764705882352941" blue="0.11764705882352941" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <attributedString key="userComments">
+                                                        <fragment content="Pointer &gt; Acceleration &gt; macOS Option &gt; Hint || Note: Don't forget to use the pre/post Ventura System Settings name."/>
+                                                    </attributedString>
                                                 </textFieldCell>
-                                                <attributedString key="userComments">
-                                                    <fragment content="Pointer &gt; Acceleration &gt; macOS Option &gt; Hint"/>
-                                                </attributedString>
                                             </textField>
                                         </subviews>
                                         <visibilityPriorities>
@@ -1653,10 +1697,10 @@ System Preferences &gt; Mouse &gt; Tracking speed </string>
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <attributedString key="userComments">
+                                                <fragment content="Pointer &gt; Sensitivity Slider &gt; Low Label"/>
+                                            </attributedString>
                                         </textFieldCell>
-                                        <attributedString key="userComments">
-                                            <fragment content="Pointer &gt; Sensitivity Slider &gt; Low Label"/>
-                                        </attributedString>
                                     </textField>
                                     <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="gh3-uq-9m8">
                                         <rect key="frame" x="235" y="95" width="50" height="14"/>
@@ -1664,10 +1708,10 @@ System Preferences &gt; Mouse &gt; Tracking speed </string>
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <attributedString key="userComments">
+                                                <fragment content="Pointer &gt; Sensitivity Slider &gt; Medium Label"/>
+                                            </attributedString>
                                         </textFieldCell>
-                                        <attributedString key="userComments">
-                                            <fragment content="Pointer &gt; Sensitivity Slider &gt; Medium Label"/>
-                                        </attributedString>
                                     </textField>
                                     <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="uSx-Gs-ivn">
                                         <rect key="frame" x="323" y="95" width="33" height="14"/>
@@ -1675,10 +1719,10 @@ System Preferences &gt; Mouse &gt; Tracking speed </string>
                                             <font key="font" metaFont="smallSystem"/>
                                             <color key="textColor" name="secondaryLabelColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                            <attributedString key="userComments">
+                                                <fragment content="Pointer &gt; Sensitivity Slider &gt; High Label"/>
+                                            </attributedString>
                                         </textFieldCell>
-                                        <attributedString key="userComments">
-                                            <fragment content="Pointer &gt; Sensitivity Slider &gt; High Label"/>
-                                        </attributedString>
                                     </textField>
                                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="bMA-KL-0jb" customClass="SensitivityDisplay" customModule="Mac_Mouse_Fix" customModuleProvider="target">
                                         <rect key="frame" x="365" y="104" width="52" height="34"/>
@@ -1767,6 +1811,11 @@ System Preferences &gt; Mouse &gt; Tracking speed </string>
                                                     <font key="font" metaFont="systemBold"/>
                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    <attributedString key="userComments">
+                                                        <fragment>
+                                                            <string key="content">NOTE: About &gt; Mac Mouse Fix Label || NOTE TO SELF: We don't mark 'Mac Mouse Fix' and 'macOS' strings as 'Do Not Translate' since in some languages they might be adjusted. E.g. in Arabic, 'macOS' is usually referred to as 'نظام macOS' (= 'macOS system') inside the UI.</string>
+                                                        </fragment>
+                                                    </attributedString>
                                                 </textFieldCell>
                                             </textField>
                                             <imageView toolTip="Hold Command (⌘) and Shift (⇧), then click this icon to reveal Mac Mouse Fix's configuration file in Finder" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mWQ-i7-vza" customClass="ClickableImageView">
@@ -1776,6 +1825,9 @@ System Preferences &gt; Mouse &gt; Tracking speed </string>
                                                     <constraint firstAttribute="height" constant="50" id="XlS-Hw-sSd"/>
                                                 </constraints>
                                                 <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="AppIconRoundFromHelper-deleteThis" id="3wF-XB-bvL"/>
+                                                <attributedString key="userComments">
+                                                    <fragment content="About Tab &gt; Mac Mouse Fix Icon &gt; Tooltip"/>
+                                                </attributedString>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="modifiers" value="command, shift"/>
                                                     <userDefinedRuntimeAttribute type="string" keyPath="actionString" value="reveal-config"/>
@@ -1787,6 +1839,9 @@ System Preferences &gt; Mouse &gt; Tracking speed </string>
                                                     <font key="font" metaFont="menu" size="11"/>
                                                     <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                    <attributedString key="userComments">
+                                                        <fragment content="About &gt; Created By Label"/>
+                                                    </attributedString>
                                                 </textFieldCell>
                                             </textField>
                                         </subviews>
@@ -1838,12 +1893,15 @@ System Preferences &gt; Mouse &gt; Tracking speed </string>
                                                             <font key="font" metaFont="system"/>
                                                             <color key="textColor" name="linkColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                            <attributedString key="userComments">
+                                                                <fragment content="About &gt; Bug Report Link"/>
+                                                            </attributedString>
                                                         </textFieldCell>
                                                         <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="href" value="https://noah-nuebling.github.io/mac-mouse-fix-feedback-assistant/?type=bug-report"/>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="leftPadding">
                                                                 <integer key="value" value="30"/>
                                                             </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="MFLinkID" value="FeedbackBugReport"/>
                                                         </userDefinedRuntimeAttributes>
                                                     </textField>
                                                 </subviews>
@@ -1885,12 +1943,15 @@ System Preferences &gt; Mouse &gt; Tracking speed </string>
                                                             <font key="font" metaFont="system"/>
                                                             <color key="textColor" name="linkColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                            <attributedString key="userComments">
+                                                                <fragment content="About &gt; GitHub Link"/>
+                                                            </attributedString>
                                                         </textFieldCell>
                                                         <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="href" value="https://github.com/noah-nuebling/mac-mouse-fix/"/>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="leftPadding">
                                                                 <integer key="value" value="30"/>
                                                             </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="MFLinkID" value="GitHub"/>
                                                         </userDefinedRuntimeAttributes>
                                                     </textField>
                                                 </subviews>
@@ -1951,12 +2012,15 @@ System Preferences &gt; Mouse &gt; Tracking speed </string>
                                                             <font key="font" metaFont="system"/>
                                                             <color key="textColor" name="linkColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                            <attributedString key="userComments">
+                                                                <fragment content="About &gt; Feature Request Link"/>
+                                                            </attributedString>
                                                         </textFieldCell>
                                                         <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="href" value="https://noah-nuebling.github.io/mac-mouse-fix-feedback-assistant/?type=feature-request"/>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="leftPadding">
                                                                 <integer key="value" value="30"/>
                                                             </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="MFLinkID" value="FeedbackFeatureRequest"/>
                                                         </userDefinedRuntimeAttributes>
                                                     </textField>
                                                 </subviews>
@@ -1998,12 +2062,15 @@ System Preferences &gt; Mouse &gt; Tracking speed </string>
                                                             <font key="font" metaFont="system"/>
                                                             <color key="textColor" name="linkColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                            <attributedString key="userComments">
+                                                                <fragment content="About &gt; Website Link"/>
+                                                            </attributedString>
                                                         </textFieldCell>
                                                         <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="href" value="https://mousefix.org/"/>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="leftPadding">
                                                                 <integer key="value" value="30"/>
                                                             </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="MFLinkID" value="Website"/>
                                                         </userDefinedRuntimeAttributes>
                                                     </textField>
                                                 </subviews>
@@ -2064,12 +2131,16 @@ System Preferences &gt; Mouse &gt; Tracking speed </string>
                                                             <font key="font" metaFont="system"/>
                                                             <color key="textColor" name="linkColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                            <attributedString key="userComments">
+                                                                <fragment content="About &gt; Send Email Link"/>
+                                                            </attributedString>
                                                         </textFieldCell>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="leftPadding">
                                                                 <integer key="value" value="30"/>
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
+                                                        <accessibility identifier="axAboutSendEmailButton"/>
                                                         <connections>
                                                             <action selector="sendEmail:" target="buH-zX-xXu" id="Tio-YK-38L"/>
                                                         </connections>
@@ -2113,12 +2184,15 @@ System Preferences &gt; Mouse &gt; Tracking speed </string>
                                                             <font key="font" metaFont="system"/>
                                                             <color key="textColor" name="linkColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                            <attributedString key="userComments">
+                                                                <fragment content="About &gt; Help Link"/>
+                                                            </attributedString>
                                                         </textFieldCell>
                                                         <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="href" value="https://github.com/noah-nuebling/mac-mouse-fix/discussions/categories/guides"/>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="leftPadding">
                                                                 <integer key="value" value="30"/>
                                                             </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="MFLinkID" value="Guides"/>
                                                         </userDefinedRuntimeAttributes>
                                                     </textField>
                                                 </subviews>
@@ -2193,12 +2267,15 @@ System Preferences &gt; Mouse &gt; Tracking speed </string>
                                                             <font key="font" metaFont="system"/>
                                                             <color key="textColor" name="linkColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                            <attributedString key="userComments">
+                                                                <fragment content="About &gt; Acknowledgements Link"/>
+                                                            </attributedString>
                                                         </textFieldCell>
                                                         <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="href" value="https://github.com/noah-nuebling/mac-mouse-fix/blob/master/Acknowledgements.md"/>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="leftPadding">
                                                                 <integer key="value" value="30"/>
                                                             </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="MFLinkID" value="Acknowledgements"/>
                                                         </userDefinedRuntimeAttributes>
                                                     </textField>
                                                 </subviews>
@@ -2240,13 +2317,15 @@ System Preferences &gt; Mouse &gt; Tracking speed </string>
                                                             <font key="font" metaFont="system"/>
                                                             <color key="textColor" name="linkColor" catalog="System" colorSpace="catalog"/>
                                                             <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                            <attributedString key="userComments">
+                                                                <fragment content="About &gt; Milkshake Link"/>
+                                                            </attributedString>
                                                         </textFieldCell>
                                                         <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="href" value="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=ARSTVR6KFB524&amp;source=url&amp;lc=en_US"/>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="leftPadding">
                                                                 <integer key="value" value="30"/>
                                                             </userDefinedRuntimeAttribute>
-                                                            <userDefinedRuntimeAttribute type="string" keyPath="href_future" value="https://github.com/sponsors/noah-nuebling"/>
+                                                            <userDefinedRuntimeAttribute type="string" keyPath="MFLinkID" value="BuyMeAMilkshake"/>
                                                         </userDefinedRuntimeAttributes>
                                                     </textField>
                                                 </subviews>

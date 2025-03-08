@@ -10,10 +10,9 @@
 #import "AppDelegate.h"
 #import "AuthorizeAccessibilityView.h"
 #import "Utility_App.h"
-#import "ToastNotificationController.h"
+#import "ToastController.h"
 #import "MFMessagePort.h"
-//#import "CaptureNotificationCreator.h" 
-#import "WannabePrefixHeader.h"
+//#import "CaptureToasts.h" 
 #import "Mac_Mouse_Fix-Swift.h"
 
 @interface AuthorizeAccessibilityView ()
@@ -59,13 +58,13 @@ AuthorizeAccessibilityView *_accViewController;
     [super viewDidLoad];
     
     if (@available(macOS 13.0, *)) { } else {
-        self.openSettingsLink.stringValue = NSLocalizedString(@"accessibility.settings-link.pre-ventura", @"First draft: Open 'Security & Privacy' Preferences || Notes: The string for Ventura and later is defined in Interface Builder");
+        self.openSettingsLink.stringValue = NSLocalizedString(@"accessibility.settings-link.pre-ventura", @"Note: 'System Preferences' were renamed to 'System Settings' in macOS Ventura. The string for Ventura and later is defined in another file, this is the string for earlier versions || Example: 1. Open 'Security & Privacy' Preferences 2. Switch on 'Mac Mouse Fix Helper'");
     }
 }
 
 - (IBAction)AuthorizeButton:(NSButton *)sender {
     
-    /// This is done in IB instead now.
+    /// This is defined in IB instead now. 
     
     assert(false);
     
@@ -199,14 +198,14 @@ AuthorizeAccessibilityView *_accViewController;
 //        [NSAnimationContext.currentContext setDuration:0.3];
 //        [NSAnimationContext.currentContext setCompletionHandler:^{
 ////            NSAttributedString *message = [[NSAttributedString alloc] initWithString:@"Welcome to Mac Mouse Fix!"];
-////            [ToastNotificationController attachNotificationWithMessage:message toWindow:AppDelegate.mainWindow forDuration:-1];
+////            [ToastController attachNotificationWithMessage:message toWindow:AppDelegate.mainWindow forDuration:-1];
 //            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.0), dispatch_get_main_queue(), ^{
 //                // v This usually fails because the remote message port can't be created
 //                //      I think it happens because the helper kills itself after gaining accessibility access and is restarted by launchd too slowly. Weirdly, I think I remember that this used to work.
 //                NSSet *capturedButtons = [RemapTableUtility getCapturedButtons];
-//                [CaptureNotificationCreator showButtonCaptureNotificationWithBeforeSet:NSSet.set afterSet:capturedButtons];
+//                [CaptureToasts showButtonCaptureToastWithBeforeSet:NSSet.set afterSet:capturedButtons];
 ////                NSAttributedString *message = [[NSAttributedString alloc] initWithString:@"Mac Mouse Fix will stay enabled after you restart your Mac"];
-////                [ToastNotificationController attachNotificationWithMessage:message toWindow:AppDelegate.mainWindow forDuration:-1];
+////                [ToastController attachNotificationWithMessage:message toWindow:AppDelegate.mainWindow forDuration:-1];
 //            });
 //        }];
 //        baseView.animator.alphaValue = 1;

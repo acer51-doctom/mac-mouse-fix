@@ -38,7 +38,6 @@
 ///         Edit: For now we're using this for UI animations in some places where we can't use CASpringAnimation. (I think it's just window resizing / repositioning). In these applicaitons we don't have all these super hard constraints around phases and subpixelating values and restarting the animation constantly while it's running like we do for the scroll animator which made it so incredibly hard to make everything race-condition-free
 
 import Foundation
-import CocoaLumberjackSwift
 
 @objc class DynamicSystemAnimator: NSObject {
     
@@ -67,7 +66,7 @@ import CocoaLumberjackSwift
     let sampleRate: Int = 6000 * 100
     
     /// State
-    var target: Double
+    var anchor: Double
     var x0: Double /// Last displacement
     var x0_: Double /// Last velocity
 //    var x0__: Double /// Last acceleration
@@ -104,7 +103,7 @@ import CocoaLumberjackSwift
         stopCallback = nil
         
         /// State
-        target = 0
+        anchor = 0
         x0 = 0
         x0_ = 0
 //        x0__ = 0
@@ -123,7 +122,7 @@ import CocoaLumberjackSwift
     
     @objc func resetState() {
         queue.async {
-            self.target = 0
+            self.anchor = 0
             self.x0 = 0
             self.x0_ = 0
 //            self.x0__ = 0
@@ -140,22 +139,20 @@ import CocoaLumberjackSwift
             /// Store stopCallback
             self.stopCallback = onComplete
             
-            /// Normalize displacement
+            /// Init position (x0) and anchor
+            ///     Normalize displacement
             ///     So the values don't grow to infinity and overflow
             self.x0 += distance
-            self.target = self.x0 /// x will go from target to 0
+            self.anchor = self.x0 /// x0 will go from anchor to 0
             
-            /// Reset velocity
+            /// Reset velocity (x0_)
             self.x0_ = 0.0
             
             /// Update state
             self.isFirstCallback = true
             
             /// Configure displayLink
-            ///
-            /// Notes:
-            /// - I feel like this somehow makes the animation more stuttery? Turning this off.
-            /// - (Sep 2024) We're not linking the displayLink to a specific display at all. Won't this cause problems especially with 120Hz or Pro Motion displays?
+            ///     I feel like this somehow makes the animation more stuttery?
 //            self.displayLink.linkToMainScreen_Unsafe()
             
             /// Start displayLink
@@ -208,7 +205,7 @@ import CocoaLumberjackSwift
             x0_ = x_
         }
         
-        /// Check end - based on distance to target & velocity
+        /// Check end - based on distance to anchor & velocity
         let isEnd = abs(x) <= epsilon && abs(x_) <= epsilon
         
         /// Debug
@@ -216,7 +213,7 @@ import CocoaLumberjackSwift
 //        DDLogDebug("SpringAnimation isEnding.")
         
         /// Call callback
-        callback(target - x) /// Becaues x actually goes from target to 0
+        callback(anchor - x) /// Because x actually goes from anchor to 0
         
         /// Update globals
         t0 = t

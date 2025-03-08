@@ -79,7 +79,7 @@ class ScrollTabController: NSViewController {
             
             /// Show message to user
 
-            ToastCreator.showReviveToast(showButtons: false, showScroll: true)
+            Toasts.showReviveToast(showButtons: false, showScroll: true)
         }
     }
     
@@ -116,9 +116,11 @@ class ScrollTabController: NSViewController {
         /// Precise
         /// Notes:
         /// - Why do we generate the preciseHint text in code instead of setting it in IB?
+        /// - TODO: Determine line-width programmatically. (We're telling translators to set the line break to their own taste, to make the layout look good, but now that we expect localizers to use .xcloc files instead of running the app that might be difficult.)
+        ///     -> Do the same thing for all UI strings with non-semantic linebreaks. (non-semantic means they linebreak exists to make the layout look good not to separate text logically.)
         precise.bindingTarget <~ preciseToggle.reactive.boolValues
         preciseToggle.reactive.boolValue <~ precise.producer
-        let preciseHintRaw = NSLocalizedString("precise-scrolling-hint", comment: "First draft: Scroll precisely, even without a keyboard modifier,\nbymoving the scroll wheel _slowly_ || Note: The line break (\n) is there so the layout of the Scroll tab doesn't become too wide which looks weird. You can set it to your own taste.")
+        let preciseHintRaw = NSLocalizedString("precise-scrolling-hint", comment: "Note: The line break is there so the layout of the Scroll tab doesn't become too wide which looks weird. You can set the linebreak to your own taste. || Hint: if text in your language is typically around X times longer than English, then the lines here probably should not be much longer than X times the English version.")
         preciseHint.attributedStringValue = NSAttributedString(attributedMarkdown: preciseHintRaw.attributed().fillingOutBaseAsHint())!
         
         /// Generate macOS hint string
@@ -136,7 +138,7 @@ class ScrollTabController: NSViewController {
             mouseSettingsURL = "file:///System/Library/PreferencePanes/Mouse.prefPane"
             mouseSettingsURL = "" /// Disable for now (see above)
         }
-        let macOSHintRaw = String(format: NSLocalizedString("macos-scrolling-hint", comment: "First draft: Set speed under\n[%@ > Mouse > Scrolling Speed](%@)"), UIStrings.systemSettingsName(), mouseSettingsURL)
+        let macOSHintRaw = String(format: NSLocalizedString("macos-scrolling-hint", comment: ""), UIStrings.systemSettingsName(), mouseSettingsURL)
 
         /// Installl the macOSHint.
         ///     We manually make the macOSHint width equal the preciseSection width, because if the width changes the window resizes from the left edge which looks crappy.
@@ -176,6 +178,42 @@ class ScrollTabController: NSViewController {
             }
         }
         
+        /// Scrollwheel capture notifications
+        /// Notes:
+        /// - You can find discussion of the design-thoughts behind this inside `getCapturedButtonsAndExcludeButtonsThatAreOnlyCapturedByModifier:`
+        /// - How to ship this:
+        ///     - We're introducing new localizable strings, so we should ship this in a major update with a Beta version
+        ///     - Once we shipped it, we should probably update the Captured Buttons Guide: https://github.com/noah-nuebling/mac-mouse-fix/discussions/112 - or create a new guide.
+        
+        let modProducer = SignalProducer.combineLatest(horizontalMod.producer, zoomMod.producer, swiftMod.producer, preciseMod.producer) /// We could reuse this down in the Keyboard modifier section, but currently, we're not
+        let captureProducer = SignalProducer.combineLatest(smooth.producer, reverseDirection.producer, scrollSpeed.producer, modProducer).combinePrevious()
+            
+        captureProducer.startWithValues { (previous, current) in
+            
+            DDLogDebug("ScrollTab - Capture-relevant settings changed")
+            
+            if let toastedWindow = NSApp.mainWindow {
+                
+                let (smooth0, reverse0, speed0, mods0) = previous
+                let (smooth1, reverse1, speed1, mods1) = current
+                
+                let (horizontal0, zoom0, swift0, precise0) = mods0
+                let (horizontal1, zoom1, swift1, precise1) = mods1
+                
+                let wasCaptured = smooth0 != "off" || reverse0 || speed0 != "system" || horizontal0 != 0 || zoom0 != 0 || swift0 != 0 || precise0 != 0
+                let isCaptured  = smooth1 != "off" || reverse1 || speed1 != "system" || horizontal1 != 0 || zoom1 != 0 || swift1 != 0 || precise1 != 0
+                    
+                DDLogDebug("ScrollTab - smooth: \(smooth0)->\(smooth1) reverse: \(reverse0)->\(reverse1) speed: \(speed0)->\(speed1) horizontal: \(horizontal0)->\(horizontal1) zoom: \(zoom0)->\(zoom1) swift: \(swift0)->\(swift1) precise: \(precise0)->\(precise1)")
+                
+                if wasCaptured && !isCaptured {
+                    CaptureToasts.showScrollWheelCaptureToast(false)
+                }
+                if !wasCaptured && isCaptured {
+                    CaptureToasts.showScrollWheelCaptureToast(true)
+                }
+            }
+        }
+        
         /// Keyboard modifiers
         
         horizontalModField <~ horizontalMod.producer.map({ NSEvent.ModifierFlags(rawValue: $0) })
@@ -201,13 +239,17 @@ class ScrollTabController: NSViewController {
             self.preciseMod.set(defaultP.rawValue)
         }
         
-        /// v Using combineLatest here might be easier
-        let allFlags = SignalProducer<(String, UInt), Never>.merge(horizontalMod.producer.map{ ("h", $0) }, zoomMod.producer.map{ ("z", $0) }, swiftMod.producer.map{ ("s", $0) }, preciseMod.producer.map{ ("p", $0) })
+        /// v Using Signal.combineLatest here might be easier.
+        ///     Edit: I could do it using combinePrevious() on the modProducer we defined above, but I think it would be much more complicated and less elegant
         
+        let allFlags = SignalProducer<(String, UInt), Never>.merge(horizontalMod.producer.map{ ("h", $0) }, zoomMod.producer.map{ ("z", $0) }, swiftMod.producer.map{ ("s", $0) }, preciseMod.producer.map{ ("p", $0) })
         allFlags.startWithValues { (src, flags) in
             
-//            DispatchQueue.main.async { /// Need to dispatch async to prevent weird crashes inside ReactiveSwift
+//            DispatchQueue.main.async { /// Need to dispatch async to prevent weird crashes inside ReactiveSwift. Edit: When / why did we comment this out? Seems to not be needed anymore
                 
+                /// Delete the modifiers which the user just set - delete them for all the other scroll modifications
+                ///     So you can't set two different modifications to the same modifier
+            
                 if self.horizontalMod.get() == flags && src != "h" {
                     self.horizontalMod.set(0)
                 }
@@ -221,6 +263,8 @@ class ScrollTabController: NSViewController {
                     self.preciseMod.set(0)
                 }
                 
+                /// Make restoreDefaults button appear/disappear
+            
                 var restoreDefaultsIsEnabled = true
                 
                 if self.horizontalMod.get() == defaultH.rawValue

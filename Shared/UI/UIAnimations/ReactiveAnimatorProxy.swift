@@ -90,7 +90,7 @@ extension NSAnimatablePropertyContainer where Self: NSObject {
             
             /// Make copy so we don't change the animation outside this scope
             var animation = animation1!.copy() as! CABasicAnimation
-            
+
             /// Make animations round to integer to avoid jitter. This is useful for resize animations. But this breaks opacity animations.
             var doRoundToInt = false
             if (newValue as? NSRect) != nil { doRoundToInt = true }
@@ -138,9 +138,9 @@ extension NSAnimatablePropertyContainer where Self: NSObject {
                 base.layer?.setNeedsDisplay()
                 base.layer?.displayIfNeeded()
                 
-                let c = animation.copy() as! CABasicAnimation// newValue.shadowColor
-                let r = animation.copy() as! CABasicAnimation//newValue.shadowBlurRadius
-                let o = animation.copy() as! CABasicAnimation // newValue.shadowOffset
+                let c = animation.copy() as! CABasicAnimation //newValue.shadowColor
+                let r = animation.copy() as! CABasicAnimation //newValue.shadowBlurRadius
+                let o = animation.copy() as! CABasicAnimation //newValue.shadowOffset
                 
                 c.fromValue = base.shadow?.shadowColor
                 c.toValue = newValue.shadowColor
@@ -176,13 +176,16 @@ extension NSAnimatablePropertyContainer where Self: NSObject {
                 
             } else if let animationManager = NSAnimationManager.current() {
                 
-                /// macOS 15 Sequoia fix
-                ///     - Backported this from the feature-strings-catalog branch into the master branch. See the feature-strings-catalog branch for more info. (last updated: 16.09.2024)
+                /// Default: Use animationManager
+                
+                /// macOS 15 Sequoia Fix
+                ///     - This turns the 'animationPrototype' into a real animation afaik. See declaration for more info.
+                ///     - Only do this on animations that will be performed by the animation manager! Doing this on shadow animations (which aren't performed by the manager) breaks the animations. (as of 16.09.2024)
                 if #available(macOS 15.0, *) {
                     animation = animation.forObject(base, key: keyPath, targetValue: newValue) as! CABasicAnimation
                 }
                 
-                /// Default: Use animationManager
+                /// Call animationManager
                 animationManager.setTargetValue(newValue, for: base, keyPath: keyPath, animation: animation)
                 
             } else { /// Fallback
@@ -205,8 +208,9 @@ extension NSAnimatablePropertyContainer where Self: NSObject {
         }
     }
     
-    /// Get subobjects
     public subscript<S>(dynamicMember keyPath: String) -> ReactiveAnimatorPropertyProxy<U, S> {
+        
+        /// Get animators for properties of `base`
         let selfObject = base.value(forKeyPath: self.keyPath) as! U
         return ReactiveAnimatorPropertyProxy<U, S>(base: selfObject, keyPath: keyPath, type: type)
     }

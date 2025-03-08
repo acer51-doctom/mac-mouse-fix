@@ -10,7 +10,6 @@
 /// Don't use this directly. Use the subclass `TouchAnimator` For discussion see `TouchAnimator`.
 
 import Foundation
-import CocoaLumberjackSwift
 import CoreVideo
 import QuartzCore
 
@@ -328,7 +327,7 @@ import QuartzCore
         cancel(forAutoMomentumScroll: false)
     }
     
-    @objc (cancel_forAutoMomentumScroll:) func cancel(forAutoMomentumScroll: Bool) {
+    @objc(cancel_forAutoMomentumScroll:) func cancel(forAutoMomentumScroll: Bool) {
         
         /// We're using the async call with flags because creating the dispatchworkitemflags for the normal one is somehow pretty slow.
         displayLink.dispatchQueue.async(flags: defaultDFs) {

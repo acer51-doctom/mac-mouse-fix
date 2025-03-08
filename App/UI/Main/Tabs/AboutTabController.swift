@@ -8,7 +8,6 @@
 //
 
 import Cocoa
-import CocoaLumberjackSwift
 
 class AboutTabController: NSViewController {
 
@@ -28,12 +27,10 @@ class AboutTabController: NSViewController {
     var payButtonWrapper: NSView? = nil
     var payButtonwrapperConstraints: [NSLayoutConstraint] = []
     
-    var currentIsLicensed: Bool? = nil
-    var currentLicenseConfig: MFLicenseConfig? = nil
-    var currentLicenseState: MFLicenseState? = nil
-    var currentTrialState: MFTrialState? = nil
+    var currentLicenseConfig: LicenseConfig? = nil
+    var currentLicense: MFLicenseAndTrialState? = nil
 
-    private var trackingArea: NSTrackingArea? = nil
+    var trackingArea: NSTrackingArea? = nil
     
     /// IBActions
     
@@ -43,11 +40,13 @@ class AboutTabController: NSViewController {
         
         let alert = NSAlert()
         alert.alertStyle = .informational
-        alert.messageText = NSLocalizedString("mail-alert.title", comment: "First draft: Write an Email?")
-        alert.informativeText = NSLocalizedString("mail-alert.body", comment: "First draft: I read and appreciate all emails, even though I can't respond to all")
+        alert.messageText = NSLocalizedString("mail-alert.title", comment: "")
+        alert.informativeText = NSLocalizedString("mail-alert.body", comment: "")
 //        alert.showsSuppressionButton = true
-        alert.addButton(withTitle: NSLocalizedString("mail-alert.send", comment: "First draft: Write Email"))
-        alert.addButton(withTitle: NSLocalizedString("mail-alert.back", comment: "First draft: Back"))
+        let sendButton = alert.addButton(withTitle: NSLocalizedString("mail-alert.send", comment: ""))
+        let backButton = alert.addButton(withTitle: NSLocalizedString("mail-alert.back", comment: ""))
+        sendButton.keyEquivalent = IBUtility.keyChar(forLiteral: "return")
+        backButton.keyEquivalent = IBUtility.keyChar(forLiteral: "escape")
         
         /// Set mail icon
         
@@ -90,7 +89,7 @@ class AboutTabController: NSViewController {
         ///     (Note: Don't use NSLocalizedStringggg real name in comments or BartyCrouch gets confused.)
         ///  - We're handling the case that the `app-version` key doesn't exist here, because we're adding the version-format stuff right before the 3.0.0 release, and the Korean and Chinese translations don't contain the 'app-version' key, yet.
         
-        let versionFormat = NSLocalizedString("app-version", comment: "First draft: Version %@ || Note: %@ will be replaced by the app version, e.g. '3.0.0 (22027)'")
+        let versionFormat = NSLocalizedString("app-version", comment: "Note: %@ will be the app version, e.g. '3.0.0 (22027)'")
         let versionFormatExists = versionFormat.count != 0 && versionFormat != "app-version"
         let versionNumbers = "\(Locator.bundleVersionShort()) (\(Locator.bundleVersion()))"
         versionField.stringValue = versionFormatExists ? String(format: versionFormat, versionNumbers) : versionNumbers
@@ -102,18 +101,14 @@ class AboutTabController: NSViewController {
         /// Get licensing info
         ///     Notes:
         ///     - Not using the completionHandler of `Licensing.licensingState` here since it's asynchronous. However, calling `licensingState()` will update isLicensed and then the UI will update. We could also have separated ConfigValue for the daysOfUse config value, but I don't think it'll be noticable if that doesn't update totally correctl
-        ///         - Update: Oct 2024: This is totally outdated and I don't know what it means anymore.
         
         /// Get cache
-        let (cachedLicenseConfig, cachedLicenseState, cachedTrialState) = License.checkLicenseAndTrial_Preliminary()
+        let cachedLicenseConfig = LicenseConfig.getCached()
+        let cachedLicense = License.checkLicenseAndTrialCached(licenseConfig: cachedLicenseConfig)
         
-        /// Step 1: Set UI to cache
-        if cachedLicenseState.isLicensed {
-            updateUI_WithIsLicensedTrue(licenseState: cachedLicenseState) /// Don't dispatch to main here bc this should already be running on main (?)
-        } else {
-            updateUI_WithIsLicensedFalse(licenseConfig: cachedLicenseConfig, trialState: cachedTrialState)
-        }
-        
+        /// 1. Set UI to cache
+        updateUI(licenseConfig: cachedLicenseConfig, license: cachedLicense)
+            
         /// 2. Get real values and update UI again
 //        updateUIToCurrentLicense()
         
@@ -122,12 +117,7 @@ class AboutTabController: NSViewController {
     /// Did appear
     
     override func viewDidAppear() {
-        /// Step 2: Get real values and update UI
-        ///     Notes:
-        ///         - Why are we doing step 2 in viewDidAppear() and step 1 in viewDidLoad()?
-        ///         - viewDidAppear() is called twice upon app launch for some reason (Oct 2024)
-        ///             Testing: [Jan 2025] seems like the two calls are a few hundred ms apart, so debouncing is prolly not the best choice?
-        
+        /// 2. Get real values and update UI
         updateUIToCurrentLicense()
     }
     
@@ -136,48 +126,31 @@ class AboutTabController: NSViewController {
     func updateUIToCurrentLicense() {
             
         /// This is called on load and when the user activates/deactivates their license.
-        /// - It would be cleaner and prettier if we used a reactive architecture where you have some global master license state that all the UI that depends on it subscribes to. Buttt we really only have UI that depends on the license state here on the about tab, so that would be overengineering. On the other hand we need to store the AboutTabController instance in MainAppState for global access if we don't use the reactive architecture which is also a little ugly.
+        /// - It would be cleaner and prettier if we used a reactive architecture where you have some global master license state that all the UI that depends on it subscribes to. Buttt we really only have UI that depends on the license state here on the about tab, so that would be overengineering. On the other hand we need to store the AboutTabController instance in MainAppState for global access if we don't use th reactive architecture which is also a little ugly.
         
-        
-        /// Start an async context
-        /// Notes:
-        /// - @MainActor so all licensing code runs on the mainthread.
-        Task.detached(priority: .userInitiated, operation: { @MainActor in
-            
-            let licenseState = await GetLicenseState.get()
+        LicenseConfig.get { licenseConfig in
+            License.checkLicenseAndTrial(licenseConfig: licenseConfig, completionHandler: { license, error in
                 
-            if licenseState.isLicensed {
-                DispatchQueue.main.async { self.updateUI_WithIsLicensedTrue(licenseState: licenseState) } /// Dispatch to main bc UI updates need to run on main.
-            } else {
-                let licenseConfig = await GetLicenseConfig.get() /// Only get the licenseConfig if the app *is not* licensed - that way, if the app *is* licensed through offline validation, we can avoid all internet connections.
-                let trialState = GetTrialState.get(licenseConfig)
-                DispatchQueue.main.async { self.updateUI_WithIsLicensedFalse(licenseConfig: licenseConfig, trialState: trialState) }
-            }
-        })
+                DispatchQueue.main.async {
+                    self.updateUI(licenseConfig: licenseConfig, license: license)
+                }
+                
+            })
+        }
     }
     
-    func updateUI_WithIsLicensedTrue(licenseState: MFLicenseState) {
+    func updateUI(licenseConfig: LicenseConfig, license: MFLicenseAndTrialState) {
         
-            /// Also see `updateUI_WithIsLicensedFalse()` - the first few lines are logically identical and should be kept in sync
-            
-            /// Guard: no change from 'current' values
-            ///     This prevents unnecessary rerendering of the UI when this function is called several times with the same arguments. (Which we expect to happen - this function is first supposed to be called with cached LicenseState and then with the real LicenseState from the server - as soon as that's available.)
-            let isLicensed = true
-            if currentIsLicensed == isLicensed &&
-               currentLicenseState == licenseState
-            {
-                return
-            }
-            
-            /// Update 'current' values
-            ///     Note: We don't need to copy the values before we store them into the `current...` variables, because they are immutable
-            currentIsLicensed = isLicensed
-            currentLicenseState = licenseState
-            
-            /// Deactivate tracking area
-            if let trackingArea = self.trackingArea {
-                self.view.removeTrackingArea(trackingArea)
-            }
+        /// Guard no change
+        if currentLicenseConfig?.isEqual(to: licenseConfig) ?? false && currentLicense == license { return }
+        currentLicenseConfig = licenseConfig; currentLicense = license
+        
+        /// Deactivate tracking area
+        if let trackingArea = self.trackingArea {
+            self.view.removeTrackingArea(trackingArea)
+        }
+        
+        if license.isLicensed.boolValue {
             
             ///
             /// Replace payButton with milkshake link
@@ -220,85 +193,80 @@ class AboutTabController: NSViewController {
             
             var message: String = "Something went wrong! You shouldn't be seeing this."
             
-            switch licenseState.licenseTypeInfo {
+            switch license.licenseReason {
                 
-            case is MFLicenseTypeInfoFreeCountry:
-                
-                /// Case: FreeCountry
-                
-                /// Cast licenseTypeInfo
-                guard let info = licenseState.licenseTypeInfo as? MFLicenseTypeInfoFreeCountry else {
-                    fatalError("We're in the freeCountry switch case but casting to freeCountry type failed. (That should be impossible.)")
-                }
+            case kMFLicenseReasonFreeCountry:
                 
                 /// Get localized country name + flag emoji
-                ///     Note: We only attempt to get the flagEmoji from the regionCode if getting the countryName from the regionCode actually worked. Otherwise flagEmoji getter might perhaps cause buffer overflows and stuff if the regionCode string is garbled up?
-                let countryName: String? = Locale.current.localizedString(forRegionCode: info.regionCode)
-                let flag: String? = (countryName == nil) ? nil : UIStrings.flagEmoji(info.regionCode)
-                
-                /// Apply fallbacks
-                let countryName_ = countryName ?? "Unknown Country"
-                let flag_ = flag ?? "🏁"
-
-                /// Assemble message
-                let countryString = String(format: "%@ %@", countryName_, flag_)
-                message = String(format: NSLocalizedString("free-country", comment: "First draft: Mac Mouse Fix is currently free in your country (%@)"), countryString)
-                
-            case is MFLicenseTypeInfoForce:
-            
-                /// Case: Force
-                message = "The app will appear to be licensed due to the FORCE_LICENSED flag"
-            
-            default:
-            
-                /// Case: Default
-                ///     -> Display 'thankyou for purchasing' message
-                
-                /// Validate:
-                ///     license is one of the standard, personally purchased licenseTypes
-                if !MFLicenseTypeIsPersonallyPurchased(licenseState.licenseTypeInfo) {
-                    DDLogError("Error: Will display default `thankyou for buying` message on aboutTab but the license is of unexpected (not personally purchased) type \(type(of: licenseState.licenseTypeInfo))")
+                var countryName = "Unknown Country"
+                var flag = "🏁"
+                if let regionCode = LicenseUtility.currentRegionCode() {
+                    if let n = Locale.current.localizedString(forRegionCode: regionCode) {
+                        countryName = n
+                    }
+                    if let f = UIStrings.flagEmoji(regionCode) {
+                        flag = f
+                    }
+                } else {
                     assert(false)
                 }
+                
+                /// Assemble message
+                
+                let countryString = String(format: "%@ %@", countryName, flag)
+                
+                message = String(format: NSLocalizedString("free-country", comment: ""), countryString)
+                
+            case kMFLicenseReasonForce:
+                message = "The app will appear to be licensed due to the FORCE_LICENSED flag"
+            case kMFLicenseReasonNone:
+                assert(false)
+                fallthrough
+            case kMFLicenseReasonUnknown:
+                assert(false)
+                fallthrough
+            case kMFLicenseReasonValidLicense:
                 
                 message = Randomizer.select(from: [
                     
                     /// Common
-                    (NSLocalizedString("thanks.01", comment: "First draft: ⭐️ Thank you for buying Mac Mouse Fix!"), weight: 1),
-                    (NSLocalizedString("thanks.02", comment: "First draft: 🌟 Thanks for purchasing Mac Mouse Fix!"), weight: 1),
-                    (NSLocalizedString("thanks.03", comment: "First draft: 🚀 Thanks for supporting Mac Mouse Fix!"), weight: 1),
-                    (NSLocalizedString("thanks.04", comment: "First draft: 🙌 Thanks for buying Mac Mouse Fix!"), weight: 1),
+                    (NSLocalizedString("thanks.01", comment: ""), weight: 1),
+                    (NSLocalizedString("thanks.02", comment: ""), weight: 1),
+                    (NSLocalizedString("thanks.03", comment: ""), weight: 1),
+                    (NSLocalizedString("thanks.04", comment: ""), weight: 1),
                     
                     /// Rare
-                    (NSLocalizedString("thanks.05", comment: "First draft: 🧠 Great purchasing decision! ;)"), weight: 0.1),
-                    (NSLocalizedString("thanks.06", comment: "First draft: 🔥 Awesome taste in mouse fixing software! ;)"), weight: 0.1),
-                    (NSLocalizedString("thanks.07", comment: "First draft: 💙"), weight: 0.1),
-                    (NSLocalizedString("thanks.08", comment: "First draft: :) <- My face when I saw you bought Mac Mouse Fix"), weight: 0.1),
+                    (NSLocalizedString("thanks.05", comment: ""), weight: 0.1),
+                    (NSLocalizedString("thanks.06", comment: ""), weight: 0.1),
+                    (NSLocalizedString("thanks.07", comment: ""), weight: 0.1),
+                    (NSLocalizedString("thanks.08", comment: ""), weight: 0.1),
                     
                     /// Very rare
-                    (NSLocalizedString("thanks.09", comment: "First draft: 👽 Share it with your Spacebook friends!"), weight: 0.05),
+                    (NSLocalizedString("thanks.09", comment: ""), weight: 0.05),
                     
                     /// Extremely rare
-                    (NSLocalizedString("thanks.10", comment: "First draft: 🏂 Duckgang for life!! || Note: A lot of these are very personal. And weird. They are also super rare. Feel free to change them to anything you feel like to leave a little easter egg!"), weight: 0.01),
-                    (NSLocalizedString("thanks.11", comment: "First draft: 🚜 Watch where you're going :P"), weight: 0.01),
-                    (NSLocalizedString("thanks.12", comment: "First draft: 🐁 Not these mice, mom!"), weight: 0.01),
-                    (NSLocalizedString("thanks.13", comment: "First draft: 🐹 We should get him a bow tie."), weight: 0.01),
-                    (NSLocalizedString("thanks.14", comment: "First draft: 🇹🇷 Ey Kanka, tebrikler tebrikler!"), weight: 0.01),
-                    (NSLocalizedString("thanks.15", comment: "First draft: 🥛 Whole milk of course! It's your birthday after all."), weight: 0.01),
-                    (NSLocalizedString("thanks.16", comment: "First draft: 🎸 Not John Mayer (yet). Nevertheless mayor of hearts."), weight: 0.01),
-                    (NSLocalizedString("thanks.17", comment: "First draft: 💃 1NEIN8NEIN"), weight: 0.01),
-                    (NSLocalizedString("thanks.18", comment: "First draft: 🦄 You may not want to save the world, but you're already saving mine :)"), weight: 0.01),
-                    (NSLocalizedString("thanks.19", comment: "First draft: 🏜️ Dankeschön, meine Frau..."), weight: 0.01),
-                    (NSLocalizedString("thanks.20", comment: "First draft: 🌍 Universal Studios is probably not that great anyways... :)"), weight: 0.01),
-                    (NSLocalizedString("thanks.21", comment: "First draft: 🐠 What... are... you?"), weight: 0.01),
-                    (NSLocalizedString("thanks.22", comment: "First draft: 🖤"), weight: 0.01),
-                    (NSLocalizedString("thanks.23", comment: "First draft: 🤍"), weight: 0.01),
-                    (NSLocalizedString("thanks.24", comment: "First draft: 😎 Oh you're using Mac Mouse Fix? You must be pretty cool."), weight: 0.01),
-                    (NSLocalizedString("thanks.25", comment: "First draft: 🌏 First the mice, then the world!! >:)"), weight: 0.01),
+                    (NSLocalizedString("thanks.10", comment: "Note: The weird ones are really rare. Feel free to change them to anything you feel like to leave a little easter egg!"), weight: 0.01),
+                    (NSLocalizedString("thanks.11", comment: ""), weight: 0.01),
+                    (NSLocalizedString("thanks.12", comment: ""), weight: 0.01),
+                    (NSLocalizedString("thanks.13", comment: ""), weight: 0.01),
+                    (NSLocalizedString("thanks.14", comment: ""), weight: 0.01),
+                    (NSLocalizedString("thanks.15", comment: ""), weight: 0.01),
+                    (NSLocalizedString("thanks.16", comment: ""), weight: 0.01),
+                    (NSLocalizedString("thanks.17", comment: ""), weight: 0.01),
+                    (NSLocalizedString("thanks.18", comment: ""), weight: 0.01),
+                    (NSLocalizedString("thanks.19", comment: ""), weight: 0.01),
+                    (NSLocalizedString("thanks.20", comment: ""), weight: 0.01),
+                    (NSLocalizedString("thanks.21", comment: ""), weight: 0.01),
+                    (NSLocalizedString("thanks.22", comment: ""), weight: 0.01),
+                    (NSLocalizedString("thanks.23", comment: ""), weight: 0.01),
+                    (NSLocalizedString("thanks.24", comment: ""), weight: 0.01),
+                    (NSLocalizedString("thanks.25", comment: ""), weight: 0.01),
                     
                     /// Mom
                     ("💖❤️❤️❤️ Für Beate :)", weight: 0.005),
                 ])
+            default:
+                fatalError()
             }
             
             /// Parse markdown in message
@@ -309,51 +277,27 @@ class AboutTabController: NSViewController {
             
             /// Remove calendar image
             trialSectionManager!.currentSection.imageView!.image = nil
-        
-    }
-    
-    func updateUI_WithIsLicensedFalse(licenseConfig: MFLicenseConfig, trialState: MFTrialState) {
-        
-            /// Also see `updateUI_WithIsLicensedTrue()` - the first few lines are logically identical and should be kept in sync
             
-            /// Guard: no change from 'current' values
-            let isLicensed = false
-            if currentIsLicensed == isLicensed &&
-               currentLicenseConfig == licenseConfig &&
-               currentTrialState == trialState
-            {
-                return
-            }
-            
-            /// Update 'current' values
-            ///     Note: We don't need to copy the values before we store them into the `current...` variables, because they are immutable
-            currentIsLicensed = isLicensed
-            currentLicenseConfig = licenseConfig
-            currentTrialState = trialState
-            
-            /// Deactivate tracking area
-            if let trackingArea = self.trackingArea {
-                self.view.removeTrackingArea(trackingArea)
-            }
+        } else /** not licensed */ {
             
             ///
             /// Setup trial section
             ///
             
             /// Begin managing
-            trialSectionManager?.startManaging(licenseConfig: licenseConfig, trialState: trialState)
+            trialSectionManager?.startManaging(licenseConfig: licenseConfig, license: license)
             
             /// Set textfield height
             ///     Necessary for y centering. Not sure why
             ///     Edit: Not necessary anymore since we're using the trialSectionManager. Not sure why.
             
-    //        trialSectionManager!.trialSection.textField!.heightAnchor.constraint(equalToConstant: 20).isActive = true
+//            trialSectionManager!.trialSection.textField!.heightAnchor.constraint(equalToConstant: 20).isActive = true
 
-            if trialState.trialIsActive {
+            
+            if license.trialIsActive.boolValue {
                 
                 /// Update layout
                 ///     So tracking area frames / bounds are correct
-                ///     Update: (Oct 2024) I think we don't need the tracking areas anymore? IIRC they were originally used to change from displaying "Day x/30" to "Click here to Activate License" on hover. But we ended up turning the hover effect off. So I think the tracking areas might not be necessary
                 trialSectionManager?.currentSection.needsLayout = true
                 trialSectionManager?.currentSection.superview?.needsLayout = true
                 trialSectionManager?.currentSection.superview?.layoutSubtreeIfNeeded()
@@ -365,7 +309,7 @@ class AboutTabController: NSViewController {
             }
             else { /// Trial has expired
                 
-                /// Always show activateLicense button
+                /// Always show activate button
                 trialSectionManager?.showAlternate(animate: false)
             }
             
@@ -381,13 +325,13 @@ class AboutTabController: NSViewController {
             if #available(macOS 11.0, *) {
                 self.moneyCellImage.symbolConfiguration = .init(pointSize: 13, weight: .medium, scale: .large)
             }
-            self.moneyCellImage.image = Symbols.image(withSymbolName: "bag")
+            self.moneyCellImage.image = SFSymbolStrings.image(withSymbolName: "bag")
             
             /// Swap out link -> payButton
             
             /// Create paybutton
             
-            let payButton = PayButton(title: MFLicenseConfigFormattedPrice(licenseConfig), action: {
+            let payButton = PayButton(title: licenseConfig.formattedPrice, action: {
                 LicenseUtility.buyMMF(licenseConfig: licenseConfig, locale: Locale.current, useQuickLink: false)
             })
             
@@ -433,7 +377,8 @@ class AboutTabController: NSViewController {
             
             /// Hide link
             self.moneyCellLink.isHidden = true
-        
+            
+        }
     }
     
     /// Tracking area calllbacks

@@ -8,15 +8,13 @@
 //
 
 import Cocoa
-import CocoaLumberjackSwift
 
 @objc class SharedUtilitySwift: NSObject {
-
-    
     
     static func eval<V>(@SingleValueBuilder<V> _ value: () -> V) -> V {
         
         /// Src: https://forums.swift.org/t/how-to-assign-the-value-of-a-switch-statement-to-a-variable/50991/6
+        /// Under Xcode `16.0 beta 2 (16A5171r)` and macOS Sequoia Developer Beta 2, the Swift compiler started crashing unless we assigned a `: Type` to the variable we assign the result of this function to.
         
         value()
     }
@@ -73,7 +71,7 @@ import CocoaLumberjackSwift
         let result = try NSKeyedArchiver.archivedData(withRootObject: object, requiringSecureCoding: false)
         return result
     }
-    static func insecureUnarchive(data: Data) throws -> NSCoding { /// TODO: Replace this with MFEncode() / MFDecode()
+    static func insecureUnarchive(data: Data) throws -> NSCoding {
         
         let unarchiver = try NSKeyedUnarchiver(forReadingFrom: data)
         unarchiver.requiresSecureCoding = false
